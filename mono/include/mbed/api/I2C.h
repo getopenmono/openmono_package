@@ -16,11 +16,11 @@
 #ifndef MBED_I2C_H
 #define MBED_I2C_H
 
-#include <platform.h>
+#include "platform.h"
 
 #if DEVICE_I2C
 
-#include <i2c_api.h>
+#include "i2c_api.h"
 
 #if DEVICE_I2C_ASYNCH
 #include "CThunk.h"
