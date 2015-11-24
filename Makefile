@@ -23,7 +23,8 @@ CYLIB_INCLUDES= $(INCLUDE_DIR)
 MBED_INCLUDES = $(MONO_FRAMEWORK_PATH)/include/mbed \
 				$(MONO_FRAMEWORK_PATH)/include/mbed/api \
 				$(MONO_FRAMEWORK_PATH)/include/mbed/hal \
-				$(MONO_FRAMEWORK_PATH)/include/mbed/target_cypress
+				$(MONO_FRAMEWORK_PATH)/include/mbed/target_cypress \
+				$(MONO_FRAMEWORK_PATH)/include/mbed/libraries/fs/sd
 
 MONO_INCLUDES = $(MONO_FRAMEWORK_PATH)/include \
 				$(MONO_FRAMEWORK_PATH)/include/display \
