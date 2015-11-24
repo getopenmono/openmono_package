@@ -11,7 +11,7 @@ The standard project template for mono applications. This template includes the 
 ## Getting started
 
 ### 1. Download the template
-You can find relase versions under the *[Releases](releases)* tab above.
+You can find relase versions under the *[Releases](https://github.com/getopenmono/project_template/releases)* tab above.
 
 ### 2. Get ARM GCC
 To compile mono applications, you need a compiler that supports the ARM Cortex-M3 MCU. We think the best one is ARM GCC. It's free, and you can download it pre-compiled. (Compiling compilers are kinda hairy.)
