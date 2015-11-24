@@ -15,6 +15,9 @@ MONO_FRAMEWORK_PATH=mono
 OBJECTS =		$(patsubst %.c,%.o,$(wildcard *.c)) \
 				$(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
+TARGET_HEADERS=	$(wildcard ./*.h) \
+				$(wildcard ./*.hpp)
+
 CYLIB_INCLUDES= $(INCLUDE_DIR)
 
 MBED_INCLUDES = $(MONO_FRAMEWORK_PATH)/include/mbed \
@@ -66,12 +69,12 @@ $(BUILD_DIR):
 	@echo "creating build directory"
 	@mkdir -p ./$(BUILD_DIR)
 
-$(BUILD_DIR)/%.o: %.c
+$(BUILD_DIR)/%.o: %.c $(TARGET_HEADERS)
 	@echo "Compiling C: $<"
 	@$(MKDIR) -p $(dir $@)
 	@$(CC) $(CC_FLAGS) $(ONLY_C_FLAGS) $(CDEFS) $(INCS) -o $@ $<
 
-$(BUILD_DIR)/%.o: %.cpp
+$(BUILD_DIR)/%.o: %.cpp $(TARGET_HEADERS)
 	echo "Compiling C++: $<"
 	$(MKDIR) -p $(dir $@)
 	$(CXX) $(CC_FLAGS) $(ONLY_CPP_FLAGS) $(CDEFS) $(INCS) -o $@ $<

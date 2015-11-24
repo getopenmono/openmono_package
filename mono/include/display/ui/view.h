@@ -11,6 +11,8 @@
 
 #include <display_painter.h>
 #include <rect.h>
+#include "touch_system_interface.h"
+#include "queue.h"
 
 namespace mono {
     class IApplicationContext;
@@ -34,7 +36,7 @@ namespace mono {
      *
      * @TODO Something on dependence of AppContext and Appctrl design pattern
      */
-    class View
+        class View : public IQueueItem
     {
         friend mono::IApplicationContext;
         friend Animator;
@@ -78,31 +80,94 @@ namespace mono {
         geo::Rect viewRect;
         
         /**
-         * @brief A pointer to the next view in the re-paint queue.
+         * @brief Indicate is this view should be repainted on next display 
+         * refresh.
          * 
-         * Then you call the @ref scheduleRepaint method, views use a chain of
-         * `nextDirtyView` pointers to realize a queue. This eliminates the need
-         * for a heap based variable length linked list, that implements a queue
-         * structure.
-         *
-         * The static member @ref firstDiryView is the top of the queue, and all
-         * views in the queue use this member to point to the next dirty view.
-         *
-         * The queue can be traversed by starting with @ref firstDirtyView and
-         * then following the `nextDirtyView` pointer, until a `NULL` is encountered.
          */
-        View *nextDirtyView;
+        bool isDirty;
         
         /**
-         * The top of the scheduled repaint queue.
-         * See the describing of the repaint queue implementation in 
-         * @ref nextDirtyView
+         * Views can be visible of non-visisble (hidden). When a view is *not*
+         * visible @ref scheduleRepaint will ignore requests.
+         * 
+         * You should use the methods @ref show and @ref hide is toggle visibility.
+         * @see show
+         * @see hide
+         * @see Visible
          */
-        static View *firstDirtyView;
+        bool visible;
+        
+        /**
+         * @brief The global re-paint queue.
+         *
+         * When you call the @ref scheduleRepaint method, your views is added to
+         * the re-paint queue.
+         */
+        static GenericQueue<View> dirtyQueue;
+        
+        /**
+         * This class method will run through the scheduled re-paints queue and
+         * call the @ref repaint method on all of them.
+         *
+         * This method is called automatically be the display system, you do not
+         * need to call it yourself.
+         */
+        static void repaintScheduledViews();
+        
+        /**
+         * @brief A member method to call the static method @ref repaintScheduledViews
+         * 
+         * @see repaintScheduledViews
+         */
+        void callRepaintScheduledViews();
+        
+        /**
+         * Re-paint the view content. This method should be called then the view
+         * content has changed.
+         * You can call this method directly, but it might cause graphics artifacts
+         * because the display is not double buffered. Instead you should
+         * schedule a repaint by calling the @ref scheduleRepaint() method. This
+         * method will schedule the repaint, right after the next display update.
+         *
+         * The display system will not schedule any repaints automatically. The
+         * view does not contain any state information, so you or other classes
+         * utilizing view must schedule repaints.
+         *
+         * In subclasses of View, this method _must_ be overwritten.
+         *
+         * @brief Repaint the view content, using the @ref View::painter
+         */
+        virtual void repaint() = 0;
         
     public:
         
+        
+        /**
+         * @brief The CPU time used to repaint the latest set of dirty views.
+         * This measure includes both the painting algorithms and the transfer
+         * time used to comminicate with the disdplay hardware.
+         */
+        static uint32_t RepaintScheduledViewsTime;
+        
+        
+        /**
+         *
+         * 
+         */
         View();
+        
+        
+        /**
+         *
+         * 
+         */
+        View(geo::Rect rect);
+        
+        /**
+         *
+         * 
+         */
+        ~View();
         
         /**
          * Changes the views position on the screen.
@@ -152,24 +217,6 @@ namespace mono {
         virtual geo::Size &Size();
         
         /**
-         * Re-paint the view content. This method should be called then the view
-         * content has changed.
-         * You can call this method directly, but it might cause graphics artifacts
-         * because the display is not double buffered. Instead you should 
-         * schedule a repaint by calling the @ref scheduleRepaint() method. This
-         * method will schedule the repaint, right after the next display update.
-         *
-         * The display system will not schedule any repaints automatically. The
-         * view does not contain any state information, so you or other classes
-         * utilizing view must schedule repaints.
-         *
-         * In subclasses of View, this method _must_ be overwritten.
-         *
-         * @brief Repaint the view content, using the @ref View::painter
-         */
-        virtual void repaint() = 0;
-        
-        /**
          * This method add the view to the display systems re-paint queue. The 
          * queue is executed right after a display refresh. This helps prevent
          * graphical artifacts, when running on a single display buffer system.
@@ -182,14 +229,42 @@ namespace mono {
          */
         void scheduleRepaint();
         
+        
         /**
-         * This class method will run through the scheduled re-paints queue and
-         * call the @ref repaint method on all of them.
+         * Get the view visible state. Non-visible view are ignored by the method
+         * @ref scheduleRepaint. You change the visibility state by using the
+         * methods @ref show and @ref hide
          *
-         * This method is called automatically be the display system, you do not
-         * need to call it yourself.
+         * @brief Returns the views visibility
+         * @returns `true` if the view can/should be painted on the screen, `false` otherwise.
+         * @see show
+         * @see hide
          */
-        static void repaintScheduledViews();
+        virtual bool Visible() const;
+        
+        /**
+         * Change the views visibility state to visible. This means it can be 
+         * scheduled for repaint by @ref scheduleRepaint.
+         * This method automatically schedules the view for repaint.
+         *
+         * @brief Set the view to visible, and paint it
+         * @see hide
+         * @see Visible
+         */
+        virtual void show();
+        
+        /**
+         * Change the views state to invisible. THis method will remove the view
+         * from the @ref dirtyQueue, if it has already been scheduled for repaint.
+         *
+         * Any calls to @ref scheduleRepaint will be ignored, until the view is
+         * set visible again.
+         *
+         * @brief Set the view to be invisible
+         * @see show
+         * @see Visible
+         */
+        virtual void hide();
         
         /**
          * Returns the horizontal (X-axis) width of the display canvas, in pixels.
@@ -210,6 +285,7 @@ namespace mono {
          * The orientation is controlled by the @ref IDisplayController
          */
         static Orientation DisplayOrientation();
+        
     };
     
     

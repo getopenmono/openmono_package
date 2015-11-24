@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <color.h>
 #include "display_controller_interface.h"
+#include "point.h"
+#include "rect.h"
 
 namespace mono { namespace display {
     
@@ -60,6 +62,15 @@ namespace mono { namespace display {
         
         int16_t abs(int16_t a);
         
+        /**
+         * Handler for the DisplayControllers action queue, that gets triggered
+         * when the display refreshes.
+         *
+         * This handler is normally used by the first @ref View that gets 
+         * contructed, to enable the re-paint queue.
+         */
+        mbed::FunctionPointer displayRefreshHandler;
+        
     public:
         
         /**
@@ -73,6 +84,31 @@ namespace mono { namespace display {
          */
         DisplayPainter(IDisplayController *displayController);
         
+        ~DisplayPainter();
+        
+        /**
+         * Set the Painters display refresh callback handler. The display refreshes
+         * the screen at a regular interval. To avoid graphical artifacts, you
+         * should restrict your paint calls to right after this callback gets 
+         * triggered.
+         *
+         * The default View painter already has a callback installed, that triggers
+         * the View's re-paint queue. If you create you own painter object you can
+         * safely overwrite this callback.
+         *
+         * @brief Set/Overwrite the display tearing effect / refresh callback
+         * @param obj The `this` pointer for the object who shoould have its member function called
+         * @param memPtr A pointer the the class' member function.
+         */
+        template <typename Owner>
+        void setRefreshCallback(Owner *obj, void(Owner::*memPtr)(void))
+        {
+            this->displayRefreshHandler.attach<Owner>(obj, memPtr);
+        }
+        void setRefreshCallback(void (*function)())
+        {
+            this->displayRefreshHandler.attach(function);
+        }
         
         void setForegroundColor(Color color);
         
@@ -121,6 +157,7 @@ namespace mono { namespace display {
          * @param background Optional: Set to true to paint with active background color.
          */
         void drawPixel(uint16_t x, uint16_t y, bool background = false);
+        void drawPixel(geo::Point &pos, bool background = false);
         
         /**
          * Paints a filled rectangle in the actuive foreground color. Coordinates
@@ -135,6 +172,7 @@ namespace mono { namespace display {
          * @param background Optional: Set to `true` to paint in active background color
          */
         void drawFillRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bool background = false);
+        void drawFillRect(geo::Rect &rct, bool background = false);
         
         /**
          * Draw a line on the display. The line is defined by its two end points.
@@ -154,6 +192,7 @@ namespace mono { namespace display {
          * @param background Optional: Set this to `true` to paint in active background color
          */
         void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, bool background = false);
+        void drawLine(geo::Point &from, geo::Point &to, bool background = false);
         
         /**
          * Draw an outlined rectangle with the current line width and the active
@@ -167,6 +206,7 @@ namespace mono { namespace display {
          * @param background Optional: Set this to `true` to paint in active background color
          */
         void drawRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bool background = false);
+        void drawRect(geo::Rect &rct, bool background = false);
         
         /**
          * Paint a single ASCII character on the display. Characters are always 

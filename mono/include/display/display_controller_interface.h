@@ -10,7 +10,8 @@
 #define displaySimTest_display_controller_interface_h
 
 #include <stdint.h>
-#include <callback_handle.h>
+#include <FunctionPointer.h>
+#include "ActionQueue.h"
 #include "color.h"
 
 namespace mono { namespace display
@@ -32,7 +33,8 @@ namespace mono { namespace display
     class IDisplayController
     {
     protected:
-        CallbackHandle<void*> refreshCallback;
+        //ActionQueue<10> tearingQueue;
+        mbed::FunctionPointer *refreshHandler;
     public:
         
         /**
@@ -47,7 +49,7 @@ namespace mono { namespace display
          * @param height The display height (vertical) in pixels
          * @returns The display controller instance.
          */
-        IDisplayController(int width, int height) {}
+        IDisplayController(int width, int height) : refreshHandler(NULL) {}
         
         /**
          * Initalizing the hardware display controller means setting up the
@@ -93,11 +95,20 @@ namespace mono { namespace display
          * @param obj The owner object of the callback method (the `this` context)
          * @param memPtr A pointer to the owner objects callback member function
          */
-        template <typename Owner>
-        void setRefreshCallback(Owner *obj, void(Owner::*memPtr)(void))
+        void setRefreshHandler(mbed::FunctionPointer *handler)
         {
-            refreshCallback.attach<Owner>(obj, memPtr);
+            this->refreshHandler = handler;
         }
+        
+//        bool AddRefreshCallback(mbed::FunctionPointer *fPointer)
+//        {
+//            return this->tearingQueue.AddHandler(fPointer);
+//        }
+//        
+//        bool RemoveRefreshCallback(mbed::FunctionPointer *fPointer)
+//        {
+//            return this->tearingQueue.RemoveHandler(fPointer);
+//        }
         
         /**
          * Sets the current drawing cursor to a new position (must be within the

@@ -16,12 +16,17 @@ namespace mono {
     
     static mbed::Serial defaultSerial(USBTX,USBRX);
     
+    /**
+     * Print a section of memory to the console as hex
+     * 
+     */
+    void memdump(void *ptr, uint32_t length);
     
     /** Print an error on screen or console */
     //void error(const char *msg);
     
     /** Print a warning on screen or console */
-    //void warning(const char *msg);
+    void warning(const char *msg);
     
     class Console
     {
