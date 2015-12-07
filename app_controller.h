@@ -13,8 +13,11 @@
 
 class AppController : public mono::IApplication {
     
+    mono::ui::TextLabelView helloLabel;
     
 public:
+    
+    AppController();
     
     void monoWakeFromReset();
 

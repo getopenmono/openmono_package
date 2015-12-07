@@ -71,6 +71,17 @@ typedef enum {
     TFT_TOUCH_Y2 = CYREG_PRT6_PC2,
     TFT_TOUCH_X2 = CYREG_PRT6_PC3,
     
+    //Mini jack connector
+#ifdef MONO_PCB_V2
+    JC_TIP =   CYREG_PRT12_PC3,
+    JC_RING1 = CYREG_PRT0_PC2,
+    JC_RING2 = CYREG_PRT0_PC1,
+#else
+    JC_TIP =   CYREG_PRT0_PC1,
+    JC_RING1 = CYREG_PRT0_PC2,
+    JC_RING2 = CYREG_PRT12_PC3,
+#endif
+    
     USBTX,
     USBRX,
     

@@ -76,13 +76,13 @@ $(BUILD_DIR)/%.o: %.c $(TARGET_HEADERS)
 	@$(CC) $(CC_FLAGS) $(ONLY_C_FLAGS) $(CDEFS) $(INCS) -o $@ $<
 
 $(BUILD_DIR)/%.o: %.cpp $(TARGET_HEADERS)
-	echo "Compiling C++: $<"
-	$(MKDIR) -p $(dir $@)
-	$(CXX) $(CC_FLAGS) $(ONLY_CPP_FLAGS) $(CDEFS) $(INCS) -o $@ $<
+	@echo "Compiling C++: $<"
+	@$(MKDIR) -p $(dir $@)
+	@$(CXX) $(CC_FLAGS) $(ONLY_CPP_FLAGS) $(CDEFS) $(INCS) -o $@ $<
 
 $(TARGET).elf: mono/monoCyLib.a mono/CyComponentLibrary.a mono/mbedlib.a mono/mono_framework.a $(TARGET_OBJECTS) 
 	@echo "Linking $(notdir $@)"
-	@$(LD) -Wl,--start-group $(LD_FLAGS) -o $@ $^ $(MONO_FRAMEWORK_PATH)/mono_framework.a -mthumb -march=armv7-m -mfix-cortex-m3-ldrd "-Wl,-Map,mono_project.map" -T $(LINKER_SCRIPT) -g -specs=nano.specs "-u\ _printf_float" $(LD_SYS_LIBS) -Wl,--gc-sections -Wl,--end-group
+	@$(LD) -Wl,--start-group $(LD_FLAGS) -o $@ $^ -mthumb -march=armv7-m -mfix-cortex-m3-ldrd "-Wl,-Map,mono_project.map" -T $(LINKER_SCRIPT) -g  "-u\ _printf_float" $(LD_SYS_LIBS) -Wl,--gc-sections -Wl,--end-group
 
 $(TARGET).hex: $(TARGET).elf
 	$(ELFTOOL) -C $^ --flash_size $(FLASH_SIZE) --flash_row_size $(FLASH_ROW_SIZE)
@@ -91,7 +91,7 @@ $(TARGET).hex: $(TARGET).elf
 
 $(TARGET):  $(OBJS)  ${LINKER_SCRIPT}
 	@echo "Other link: $(OBJS)"
-	$(LD) $(LDSCRIPT) $(OBJS) -o $@
+	@$(LD) $(LDSCRIPT) $(OBJS) -o $@
 
 
 systemFiles:
@@ -110,6 +110,7 @@ includeFiles:
 	@echo $(INCS)
 
 install: $(TARGET).elf
+	@python reboot.py
 	@echo "Programming app to device..."
 	$(MONOPROG) -p $(TARGET).elf --verbose 1
 
