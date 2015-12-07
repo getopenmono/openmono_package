@@ -82,7 +82,7 @@ $(BUILD_DIR)/%.o: %.cpp $(TARGET_HEADERS)
 
 $(TARGET).elf: mono/monoCyLib.a mono/CyComponentLibrary.a mono/mbedlib.a mono/mono_framework.a $(TARGET_OBJECTS) 
 	@echo "Linking $(notdir $@)"
-	@$(LD) -Wl,--start-group -o $@ $^ $(MONO_FRAMEWORK_PATH)/mono_framework.a -mthumb -march=armv7-m -mfix-cortex-m3-ldrd "-Wl,-Map,mono_project.map" -T $(LINKER_SCRIPT) -g -specs=nano.specs "-u\ _printf_float" $(LD_SYS_LIBS) -Wl,--gc-sections -Wl,--end-group
+	@$(LD) -Wl,--start-group $(LD_FLAGS) -o $@ $^ $(MONO_FRAMEWORK_PATH)/mono_framework.a -mthumb -march=armv7-m -mfix-cortex-m3-ldrd "-Wl,-Map,mono_project.map" -T $(LINKER_SCRIPT) -g -specs=nano.specs "-u\ _printf_float" $(LD_SYS_LIBS) -Wl,--gc-sections -Wl,--end-group
 
 $(TARGET).hex: $(TARGET).elf
 	$(ELFTOOL) -C $^ --flash_size $(FLASH_SIZE) --flash_row_size $(FLASH_ROW_SIZE)
