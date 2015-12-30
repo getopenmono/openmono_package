@@ -9,11 +9,11 @@
 #ifndef http_client_h
 #define http_client_h
 
-#include <mono.h>
 #include <mbed.h>
 
 #include "network_request.h"
 #include "dns_resolver.h"
+#include "wireless/redpine_command_frames.h"
 
 namespace mono { namespace network {
     
@@ -63,6 +63,9 @@ namespace mono { namespace network {
         void dnsComplete(INetworkRequest::CompletionEvent *evnt);
         
         void httpData(redpine::HttpGetFrame::CallbackData *data);
+        
+        /** when the HTTP GET frame completes, check for error */
+        void httpCompletion(redpine::ManagementFrame::FrameCompletionData *data);
         
         void triggerDataReady();
     public:

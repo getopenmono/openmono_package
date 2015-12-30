@@ -63,7 +63,7 @@ typedef enum {
     PICU5_IRQ_LINE = IRQ_PICU5,
     PICU6_IRQ_LINE = IRQ_PICU6,
     PICU12_IRQ_LINE = IRQ_PICU12,
-    PICU15_IRQ_LINE = IRQ_RESERVED
+    PICU15_IRQ_LINE = IRQ_PICU15
 } gpio_irq_piculines;
 
 

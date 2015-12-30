@@ -8,12 +8,21 @@
 #ifndef __spiTest__module_communication__
 #define __spiTest__module_communication__
 
+#include <stdint.h>
+
 #include <SPI.h>
-#include <DigitalOut.h>
 #include <FunctionPointer.h>
+
+#include <queue_interrupt.h>
+#include <mn_timer.h>
+#include <mn_digital_out.h>
+
 #include "spi_commands.h"
 #include "module_frames.h"
+
+
 #include <stdint.h>
+
 
 class AppController; // forward decl
 
@@ -169,6 +178,14 @@ namespace mono { namespace redpine {
         virtual bool pollInputQueue() = 0;
         
         /**
+         * @brief Return true if interrupt is active
+         *
+         * The module will keep the interrupt pin high until no more input is
+         * present.
+         */
+        virtual bool interruptActive() = 0;
+        
+        /**
          * Read the first available frame from the modules input queue
          * This function should be called when you are sure there is data pending
          *
@@ -203,7 +220,7 @@ namespace mono { namespace redpine {
          * @param memoryAddress The address position to read from
          * @return The 16-bit content of that address
          */
-        virtual uint16 readMemory(uint32_t memoryAddress) = 0;
+        virtual uint16_t readMemory(uint32_t memoryAddress) = 0;
         
         /**
          * Method to write to the module memory. This can be used when
@@ -268,7 +285,7 @@ namespace mono { namespace redpine {
     protected:
         mbed::SPI *spi;
         //PinName spiChipSelect;
-        mbed::DigitalOut spiChipSelect, resetLine;
+        mono::io::DigitalOut spiChipSelect, resetLine;
         QueueInterrupt spiInterrupt;
         Timer fakeISRTimer;
         
@@ -375,11 +392,13 @@ namespace mono { namespace redpine {
         uint8_t readRegister(SpiRegisters reg);
         
         
-        uint16 readMemory(uint32_t memoryAddress);
+        uint16_t readMemory(uint32_t memoryAddress);
         void writeMemory(uint32_t memoryAddress, uint16_t value);
         
         
         bool pollInputQueue();
+        
+        bool interruptActive();
         
         bool readManagementFrame(ManagementFrame &frame);
         
