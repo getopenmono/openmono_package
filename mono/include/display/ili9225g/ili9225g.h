@@ -12,14 +12,16 @@
 #include "../display_controller_interface.h"
 #include <rect.h>
 #include "queue_interrupt.h"
+#include "mn_timer.h"
 #include <power_aware_interface.h>
+#include "power_fenced_peripheral_interface.h"
 #include "mn_digital_out.h"
 #include <mbed.h>
 
 
 namespace mono { namespace display {
     
-    class ILI9225G : public IDisplayController, mono::power::IPowerAware
+    class ILI9225G : public IDisplayController, mono::power::IPowerAware, IRunLoopTask
     {
     protected:
         
@@ -27,7 +29,11 @@ namespace mono { namespace display {
         mono::io::DigitalOut Reset;
         mbed::DigitalOut RegisterSelect;
         mbed::DigitalOut IM0;
-        QueueInterrupt tearingEffect;
+        mbed::InterruptIn tearingEffect;
+        mbed::Ticker tearingWatchdog;
+        bool tearingInterruptPending;
+        bool rebootDisplay, fastInitEnable;
+        uint32_t teWat, watTime, fastInitTime;
         
         uint8_t dr, dm0,dm1,dm2;
         
@@ -39,6 +45,7 @@ namespace mono { namespace display {
         
         void writeCommand(uint16_t regData, uint16_t data);
         
+        void fastInit();
         
         /// Power awareness protocol
         
@@ -51,6 +58,10 @@ namespace mono { namespace display {
         void OnSystemBatteryLow();
         
         void tearingEffectHandler();
+        
+        void tearingWatchdogHandler();
+        
+        void taskHandler();
         
     public:
         

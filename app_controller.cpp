@@ -12,7 +12,7 @@
 // initializes the label object with position and text content
 // You should init data here, since I/O is not setup yet.
 AppController::AppController() :
-    helloLabel(mono::geo::Rect(0,100,176,20),"Hi, I'm Mono!")
+    helloLabel(mono::geo::Rect(0,100,176,20), "Hi, I'm Mono!")
 {
     // the label is width of screen, set it to be center aligned
     helloLabel.setAlignment(mono::ui::TextLabelView::ALIGN_CENTER);
