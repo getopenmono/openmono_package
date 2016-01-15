@@ -1,6 +1,6 @@
 # Mono Application Project Template
 
-The standard project template for mono applications. This template includes the complete mono framework as static libraries. It also include 3 template application files:
+The standard project template for mono applications. This template includes the complete mono framework as static libraries. It also includes three template application files:
 
  * `main.cpp`: The application entry point. Used to setup the runtime environment. *You do not need to edit this file.*
  
@@ -14,12 +14,12 @@ The standard project template for mono applications. This template includes the 
 You can find relase versions under the *[Releases](https://github.com/getopenmono/project_template/releases)* tab above.
 
 ### 2. Get ARM GCC
-To compile mono applications, you need a compiler that supports the ARM Cortex-M3 MCU. We think the best one is ARM GCC. It's free, and you can download it pre-compiled. (Compiling compilers are kinda hairy.)
+To compile mono applications, you need a compiler that supports the ARM Cortex-M3 MCU. We think the best one is ARM GCC. It's free, and you can download it pre-compiled. (Compiling compilers is kinda hairy.)
 
-Specifically you should use the **ARM GCC NONE EABI** version.[^1] You can download it from [launchpad here](https://launchpad.net/gcc-arm-embedded)
+Specifically you should use the **ARM GCC NONE EABI** version.[^1] You can download it from [Launchpad](https://launchpad.net/gcc-arm-embedded).
 
 ### 3. Setup the `Makefile`
-Now you must define the path to your installation of ARM GCC NONE EABI. Say you installed the compiler here: (If on Linux or Mac)
+Now you must define the path to your installation of ARM GCC NONE EABI. Say you are on Linux or Mac and installed the compiler here:
 
 ```
 /usr/local/gcc-arm-none-eabi-4_9-2015q3
@@ -52,20 +52,17 @@ You are ready to begin coding! Fire up your favorite text editor and open the 3 
 
 This is the entry point of the application. There are already 4 lines of code here. Lets examine them one by one:
 
-```
+```cpp
 int main()
 {
-    AppController app; // 1.
-    
+    AppController app;                                             // 1.
     mono::IApplicationContext::Instance->setMonoApplication(&app); // 2.
-    
-    app.enterRunLoop(); // 3.
-	
-	return 0; // 4.
+    app.enterRunLoop();                                            // 3.
+    return 0;                                                      // 4.
 }
 ```
 
-1. First the required AppController is instanciated. This is the class defined in `app_controller.h`.
+1. First the required AppController is instantiated. This is the class defined in `app_controller.h`.
 
 2. All mono applications have a global static object called the `ApplicationContext`, that orchestrates the runtime environment. It handles things like power modes, I/O and the run loop. In this line we assign the `AppController` object to the `ApplicationContext`.
 
