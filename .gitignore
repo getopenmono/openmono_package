@@ -4,3 +4,5 @@
 *.zip
 *.xcodeproj
 *.vcxproj*
+gcc-arm-none-eabi-*
+package/dist

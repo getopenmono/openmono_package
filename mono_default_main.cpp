@@ -14,7 +14,7 @@
 #include "app_controller.h"
 
 
-int main()
+__attribute__((weak)) int main()
 {
     AppController app;
     
