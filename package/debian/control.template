@@ -1,0 +1,13 @@
+Package: openmono
+Architecture: %DEBARCH%
+Maintainer: Jens Peter Secher <jp@openmono.com>, Kristoffer Andersen <ka@openmono.com>
+Depends: libusb-1.0-0, libqt5core5a | qtbase-abi-5-2-1, build-essential
+Priority: optional
+Section: utils
+Version: %VERSION%
+Homepage: http://developer.openmono.com
+Description: OpenMono Framework and utilities
+ OpenMono is the future DIY devices. Its an embedded platform,
+ programmed with this toolkit. THis package includes the software
+ library (called Mono Framework), device programmer (monoprog) and
+ the monomake utility, to create new application projects.
