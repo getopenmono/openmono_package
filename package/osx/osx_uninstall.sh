@@ -16,7 +16,7 @@ else
 	echo "OpenMono does not seem to be installed"
 fi
 
-if [ -e $SYMLINK ]; then
+if [ -e $SYMLINK -o -L $SYMLINK ]; then
 	echo "Removing symlink from path..."
 	rm $SYMLINK
 fi

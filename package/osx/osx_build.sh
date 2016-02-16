@@ -40,7 +40,7 @@ function downloadGcc {
 
 function copyGcc {
 	echo "Copying GCC to dist dir..."
-    if [ ! -d $2 ]; then
+    if [ ! -d $2/$1 ]; then
 		mkdir -p "$2"
 		cp -r "$1" "$2"
 	fi
@@ -63,7 +63,7 @@ function compileMonoprog {
 	cd $MONOPROG_NAME
 	./compile.sh
 	cd ..
-	echo "Copying to dist..."
+	echo "Copying to monoprog dist..."
 	mkdir -p $2
 	cp -r $1 $2
 }
