@@ -1,16 +1,11 @@
-TARGET = mono_project
-ARCH="/usr/local/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-"
 FLASH_SIZE=262144
 FLASH_ROW_SIZE=256
 FLASH_ARRAY_SIZE=65536
 EE_ARRAY=64
 EE_ROW_SIZE=16
 OPTIMIZATION = -O0
-INCLUDE_DIR=mono/include/mbed/target_cypress
 CYPRESS_DIR=$(INCLUDE_DIR)
 LINKER_SCRIPT=$(INCLUDE_DIR)/cm3gcc.ld
-BUILD_DIR=build
-MONO_FRAMEWORK_PATH=mono
 
 OBJECTS =		$(patsubst %.c,%.o,$(wildcard *.c)) \
 				$(patsubst %.cpp,%.o,$(wildcard *.cpp))
@@ -46,7 +41,6 @@ OBJCOPY=$(ARCH)objcopy
 OBJDUMP=$(ARCH)objdump
 COPY=cp
 MKDIR=mkdir
-MONOPROG=~/Dropbox/monocode/monoprog/build/monoprog
 ELFTOOL='C:\Program Files (x86)\Cypress\PSoC Creator\3.1\PSoC Creator\bin\cyelftool.exe'
 INCS = -I . $(addprefix -I, $(MBED_INCLUDES) $(MONO_INCLUDES) $(CYLIB_INCLUDES))
 CDEFS=
@@ -70,6 +64,11 @@ $(BUILD_DIR):
 	@echo "creating build directory"
 	@mkdir -p ./$(BUILD_DIR)
 
+$(BUILD_DIR)/mono_default_main.o: $(MONO_PATH)/mono_default_main.cpp
+	@echo "Compiling C++: Default main function"
+	@$(MKDIR) -p $(dir $@)
+	@$(CXX) $(CC_FLAGS) $(ONLY_CPP_FLAGS) $(CDEFS) $(INCS) -o $@ $<
+
 $(BUILD_DIR)/%.o: %.c $(TARGET_HEADERS)
 	@echo "Compiling C: $<"
 	@$(MKDIR) -p $(dir $@)
@@ -80,7 +79,7 @@ $(BUILD_DIR)/%.o: %.cpp $(TARGET_HEADERS)
 	@$(MKDIR) -p $(dir $@)
 	@$(CXX) $(CC_FLAGS) $(ONLY_CPP_FLAGS) $(CDEFS) $(INCS) -o $@ $<
 
-$(TARGET).elf: mono/monoCyLib.a mono/CyComponentLibrary.a mono/mbedlib.a mono/mono_framework.a $(TARGET_OBJECTS) 
+$(TARGET).elf: $(MONO_FRAMEWORK_PATH)/monoCyLib.a $(MONO_FRAMEWORK_PATH)/CyComponentLibrary.a $(MONO_FRAMEWORK_PATH)/mbedlib.a $(MONO_FRAMEWORK_PATH)/mono_framework.a $(TARGET_OBJECTS) $(BUILD_DIR)/mono_default_main.o
 	@echo "Linking $(notdir $@)"
 	@$(LD) -Wl,--start-group $(LD_FLAGS) -o $@ $^ -mthumb -march=armv7-m -mfix-cortex-m3-ldrd "-Wl,-Map,mono_project.map" -T $(LINKER_SCRIPT) -g  "-u\ _printf_float" $(LD_SYS_LIBS) -Wl,--gc-sections -Wl,--end-group
 

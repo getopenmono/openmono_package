@@ -4,3 +4,8 @@
 *.zip
 *.xcodeproj
 *.vcxproj*
+gcc-arm-none-eabi-*
+package/osx/dist
+*.pkg
+.AppleDouble
+.DS_Store

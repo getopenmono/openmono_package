@@ -11,9 +11,13 @@
 
 #include <mono.h>
 
+using namespace mono;
+using namespace mono::ui;
+
 class AppController : public mono::IApplication {
     
-    mono::ui::TextLabelView helloLabel;
+    // This is the text label object that will displayed
+    TextLabelView helloLabel;
     
 public:
     
@@ -24,7 +28,6 @@ public:
     void monoWillGotoSleep();
 
     void monoWakeFromSleep();
-    
     
 };
 

@@ -8,17 +8,19 @@
 
 #include "app_controller.h"
 
+using namespace mono::geo;
+
 // Contructor
 // initializes the label object with position and text content
 // You should init data here, since I/O is not setup yet.
 AppController::AppController() :
-    helloLabel(mono::geo::Rect(0,100,176,20),"Hi, I'm Mono!")
+    helloLabel(Rect(0,100,176,20), "Hi, I'm Mono!")
 {
     // the label is width of screen, set it to be center aligned
-    helloLabel.setAlignment(mono::ui::TextLabelView::ALIGN_CENTER);
+    helloLabel.setAlignment(TextLabelView::ALIGN_CENTER);
     
     // set another text color
-    helloLabel.setTextColor(mono::display::TurquoiseColor);
+    helloLabel.setTextColor(display::TurquoiseColor);
 }
 
 void AppController::monoWakeFromReset()
