@@ -9,3 +9,4 @@ package/osx/dist
 *.pkg
 .AppleDouble
 .DS_Store
+mono/
