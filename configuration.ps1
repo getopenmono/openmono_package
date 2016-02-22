@@ -1,0 +1,1 @@
+﻿$TEMPLATE_DIR="$ScriptDir/template"
