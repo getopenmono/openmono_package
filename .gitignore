@@ -11,3 +11,9 @@ package/win/dist
 .AppleDouble
 .DS_Store
 mono/
+mbed
+mbedcomp
+mono_framework
+monoprog
+mono_psoc5_library
+*x64.exe
