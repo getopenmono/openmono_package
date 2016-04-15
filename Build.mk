@@ -109,7 +109,7 @@ includeFiles:
 	@echo $(INCS)
 
 install: $(TARGET).elf
-	@python reboot.py
+	@monomake reboot
 	@echo "Programming app to device..."
 	$(MONOPROG) -p $(TARGET).elf --verbose 1
 

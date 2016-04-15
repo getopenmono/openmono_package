@@ -6,6 +6,7 @@
 *.vcxproj*
 gcc-arm-none-eabi-*
 package/osx/dist
+package/win/dist
 *.pkg
 .AppleDouble
 .DS_Store
