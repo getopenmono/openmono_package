@@ -52,7 +52,7 @@ function projectCommand {
 
 function createProjectFolder {
     if [ -e $1 ]; then
-        echo "Err: roject directory already exists!"
+        echo "Err: Project directory already exists!"
         return 1
     else
         mkdir -p $1
