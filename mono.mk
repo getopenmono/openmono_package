@@ -1,4 +1,3 @@
-include $(MONO_PATH)/Configuration.mk
 include $(MONO_PATH)/Build.mk
 
 paths:

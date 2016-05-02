@@ -19,7 +19,9 @@ MBED_INCLUDES = $(MONO_FRAMEWORK_PATH)/include/mbed \
 				$(MONO_FRAMEWORK_PATH)/include/mbed/api \
 				$(MONO_FRAMEWORK_PATH)/include/mbed/hal \
 				$(MONO_FRAMEWORK_PATH)/include/mbed/target_cypress \
-				$(MONO_FRAMEWORK_PATH)/include/mbed/libraries/fs/sd
+				$(MONO_FRAMEWORK_PATH)/include/mbed/libraries/fs/sd \
+				$(MONO_FRAMEWORK_PATH)/include/mbed/libraries/fs/fat \
+				$(MONO_FRAMEWORK_PATH)/include/mbed/libraries/fs/fat/ChaN 
 
 MONO_INCLUDES = $(MONO_FRAMEWORK_PATH)/include \
 				$(MONO_FRAMEWORK_PATH)/include/display \
@@ -109,7 +111,7 @@ includeFiles:
 	@echo $(INCS)
 
 install: $(TARGET).elf
-	@monomake reboot
+	@$(MONOMAKE) reboot
 	@echo "Programming app to device..."
 	$(MONOPROG) -p $(TARGET).elf --verbose 1
 
