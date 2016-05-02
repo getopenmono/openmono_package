@@ -60,25 +60,26 @@ function modifyMakefile {
 }
 
 checkExists git
-#clonePsoc5Library
+clonePsoc5Library
 modifyMakefile $PSOC5_LIB_NAME
-# cloneMbedLibrary
-# cloneMbedCompLibrary
+cloneMbedLibrary
+cloneMbedCompLibrary
 modifyMakefile $MBEDCOMP_LIB_NAME
-# cloneMonoFramework
+cloneMonoFramework
 modifyMakefile $MONOFRMWRK_NAME
-# buildMonoFramework
-#cloneMonoProg
-#compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
-#downloadGcc $GCC_ARM_MAC_URL
-#copyGcc $WIN_GCC_ARM_DIR_NAME $DIST_DEST_DIR
-copyFiles "msys make" $MSYS_MAKE_DIR $DIST_DEST_DIR
-copyFiles "binaries" $BINDIR $DIST_DEST_DIR
+buildMonoFramework
+cloneMonoProg
+compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
+downloadGcc $GCC_ARM_WIN_URL
+copyGcc $WIN_GCC_ARM_DIR_NAME $DIST_DEST_DIR
+copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
+#copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 #rm $DIST_DEST_DIR/bin/monomake
 copyFiles "framework" $FRAMEWORK_DIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR
-writeConfigurationFile $DIST_DEST_DIR/configuration.sh $(basename $MONOPROG_WIN_EXECUTABLE)
-makeConfigurationFile $DIST_DEST_DIR/Configuration.mk $(basename $MONOPROG_WIN_EXECUTABLE)
+#writePSConfigurationFile $DIST_DEST_DIR/configuration.ps1 $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
+$GCC_ARM_DIR_NAME=$WIN_GCC_ARM_DIR_NAME
+makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
 #symbolicLink bin/monomake monomake
-
+./build-nsis.bat

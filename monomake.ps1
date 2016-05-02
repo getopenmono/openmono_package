@@ -1,5 +1,5 @@
 ﻿#Requires -Version 2
-Add-Type -AssemblyName System.IO
+Add-Type -AssemblyName mscorlib
 
 $VERSION="1.0"
 $APPNAME="monomake"
