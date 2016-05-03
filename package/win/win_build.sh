@@ -1,7 +1,8 @@
 source ../configuration.sh
 source ../common.sh
 
-PACKAGE_NAME=OpenMono-v$VERSION-x64.exe
+ARCH=64
+PACKAGE_NAME=OpenMono-v$VERSION-x$ARCH.exe
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=../../$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
