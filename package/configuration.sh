@@ -13,6 +13,9 @@ GCC_ARM_WIN_URL=""
 WIN_MINGW_MAKE_PATH="http://downloads.sourceforge.net/project/mingw/MSYS/Base/make/make-3.81-3/make-3.81-3-msys-1.0.13-bin.tar.lzma?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fmingw%2Ffiles%2FMSYS%2FBase%2Fmake%2Fmake-3.81-3%2F&ts=1456831814&use_mirror=heanet"
 MSYS_MAKE_DIR="bin"
 
+WIN_VC2013_X64_REDIST_URL="https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe"
+WIN_VC2013_X64_REDIST_FILE="vcredist_x64.exe"
+
 MAKEFILES="../../mono_default_main.cpp ../../mono.mk ../../Build.mk ../../reboot.py"
 MAKEFILES_WIN="$MAKEFILES reset.exe"
 

@@ -4,21 +4,42 @@ Name "OpenMono"
 OutFile "OpenMonoSetup-v$%VERSION%-x64.exe"
 InstallDir "c:\OpenMono"
 
+!define MSVS_FILE "$%VCREDIST%"
+
+;Request application privileges for Windows Vista, 7, 8
+RequestExecutionLevel admin
+
 Section "Install"
+
 	SetOutPath $INSTDIR
+	
+	File "${MSVS_FILE}" 	
+	ExecWait '"$INSTDIR\${MSVS_FILE}"  /passive /norestart'	
+
 	File /r "dist\*"
-	# TODO: Find out how to extract the paths from environment.
-	File "$%QTRUNTIME%\bin\Qt5Core.dll" "$INSTDIR/monoprog"
-	File "$%QTRUNTIME%\bin\icudt53.dll" "$INSTDIR/monoprog"
-	File "$%QTRUNTIME%\bin\icuin53.dll" "$INSTDIR/monoprog"
-	File "$%QTRUNTIME%\bin\icuuc53.dll" "$INSTDIR/monoprog"
-	File "C:\windows\system32\MSVCP120.DLL" "$INSTDIR/monoprog"
-	File "C:\windows\system32\MSVCR120.DLL" "$INSTDIR/monoprog"
+	File "windows.ico"
 	${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\bin"
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
+
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
+				 "DisplayName" "OpenMono Developer Environment"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
+				 "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
+				 "DisplayIcon" "$\"$INSTDIR\windows.ico$\""
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
+				 "Publisher" "OpenMono (Monolit ApS)"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
+				 "DisplayVersion" "$\"$%VERSION%$\""
+				 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
+				 "EstimatedSize" "189000"
+
+	Delete "$INSTDIR/${MSVS_FILE}"
 SectionEnd
 
 Section "Uninstall"
 	${un.EnvVarUpdate} $0 "PATH" "R" "HKLM" "$INSTDIR"
 	RMDir /r /REBOOTOK "$INSTDIR"
+
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono"
 SectionEnd

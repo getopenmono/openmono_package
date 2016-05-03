@@ -18,6 +18,12 @@ function downloadGcc {
 	echo "GCC downloaded and extracted"
 }
 
+function downloadUrl
+{
+	echo "Downloading $1..."
+	curl -O -L $2
+}
+
 function copyGcc {
 	echo "Copying GCC to dist dir..."
     if [ ! -d $2/$1 ]; then
@@ -135,6 +141,7 @@ function compileMonoprogWin {
 	echo "Copying to monoprog dist..."
 	mkdir -p $2
 	cp -r $1 $2
+	windeployqt.exe $2/monoprog.exe --release --no-translations --dir $2
 }
 
 function writeConfigurationFile {
