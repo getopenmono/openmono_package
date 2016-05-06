@@ -6,7 +6,7 @@ Priority: optional
 Section: utils
 Version: %VERSION%
 Homepage: http://developer.openmono.com
-Description: OpenMono Framework and utilities
+Description: OpenMono Developer Environment and utilities
  OpenMono is the future DIY devices. Its an embedded platform,
  programmed with this toolkit. THis package includes the software
  library (called Mono Framework), device programmer (monoprog) and

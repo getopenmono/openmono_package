@@ -16,14 +16,27 @@ function symbolicLink {
     ln -s "../lib/openmono/$1" "$PKGROOT/usr/bin/$2"
 }
 
-# clone monoprog
+checkExists git
+clonePsoc5Library
+modifyMakefile $PSOC5_LIB_NAME
+buildPsoc5Library
+cloneMbedLibrary
+cloneMbedCompLibrary
+modifyMakefile $MBEDCOMP_LIB_NAME
+buildMbedCompLibrary
+cloneMonoFramework
+modifyMakefile $MONOFRMWRK_NAME
+buildMonoFramework
+
 cloneMonoProg
 compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE
+
 downloadGcc $GCC_ARM_DEB_URL
 copyGcc $GCC_ARM_DIR_NAME $DIST_DEST_DIR
 copyFiles "binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "framework" $FRAMEWORK_DIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
+
 cp $MAKEFILES $DIST_DEST_DIR
 writeConfigurationFile $DIST_DEST_DIR/configuration.sh
 makeConfigurationFile $DIST_DEST_DIR/Configuration.mk ""
