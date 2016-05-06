@@ -1,0 +1,2 @@
+#!/bin/bash
+easy_install -U pyserial

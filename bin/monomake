@@ -19,8 +19,10 @@ function usage {
     echo ""
     echo "Commands:"
     echo "  project [name]  Create a new project folder. Default name is: new_mono_project"
-    echo "  bootldr         See if a mono is connected and in bootloader"
     echo "  monoprog [...]  Shortcut to access the MonoProg USB programmer"
+    echo "  -p ELF_FILE     Upload an application to mono"
+    echo "  reboot          Send Reboot command to Mono, using the Arduino DTR method"
+    echo "  bootldr         See if a mono is connected and in bootloader"
     echo "  version         Display the current version of $APPNAME"
     echo "  path            Display the path to the Mono Environment installation dir"
     echo ""
@@ -31,10 +33,14 @@ function printMonoPath {
 }
 
 function writeMakefile {
+    echo "Writing Makefile: $2..."
     DATE=`date`
     echo "# Makefile created by $APPNAME, $DATE" > $2
     echo "# Project: $1" >> $2
+    echo "" >> $2
     echo "MONO_PATH=$MONO_PATH" >> $2
+    echo "include \$(MONO_PATH)/predefines.mk" >> $2
+    echo "" >> $2
     echo "TARGET=$1" >> $2
     echo "" >> $2
 	echo "include \$(MONO_PATH)/mono.mk" >> $2
@@ -52,12 +58,13 @@ function projectCommand {
 
 function createProjectFolder {
     if [ -e $1 ]; then
-        echo "Err: Project directory already exists!"
+        echo "Err: Project target directory already exists!"
         return 1
     else
         mkdir -p $1
         for file in ${PROJECT_FILES}; do
-        cp $MONO_PATH/$file $1/.
+            echo " * $1/$(basename $file)"
+            cp $MONO_PATH/$file $1/.
         done
         writeMakefile $1 $1/Makefile
     fi
@@ -75,19 +82,27 @@ function printVersion {
     echo "${APPNAME} version ${VERSION}"
 }
 
+function rebootMonoDtr {
+    python $MONO_PATH/reboot.py
+}
+
 if [ $# -lt 1 ]; then
     echo "ERR: No command argument given! You must provide a command"
     usage
 elif [ $1 == "project" ]; then
     projectCommand $1 $2
-elif [ $1 == "bootldr" ]; then
-    probeBootloader
+elif [ $1 == "reboot" ]; then
+    rebootMonoDtr
 elif [ $1 == "monoprog" ]; then
     monoprog $2 $3 $4 $5
 elif [ $1 == "version" ]; then
     printVersion
 elif [ $1 == "path" ]; then
     printMonoPath
+elif [ $1 == "bootldr" ]; then
+    probeBootloader
+elif [ $1 == "-p" ]; then
+    monoprog -p $2 --verbose=2
 else
     echo "ERR: Unknown command $1"
     usage

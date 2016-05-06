@@ -200,7 +200,7 @@ function copyFiles {
 }
 
 function modifyMakefile {
-	ARCH="ARCH=\"../$WIN_GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+	ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
 	echo "replacing GCC file path in makefile to: $ARCH"
 	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
 
