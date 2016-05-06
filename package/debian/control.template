@@ -1,7 +1,7 @@
 Package: openmono
 Architecture: %DEBARCH%
 Maintainer: Jens Peter Secher <jp@openmono.com>, Kristoffer Andersen <ka@openmono.com>
-Depends: libusb-1.0-0, libqt5core5a | qtbase-abi-5-2-1, build-essential
+Depends: libusb-1.0-0, libqt5core5a | qtbase-abi-5-2-1, build-essential, gcc-arm-embedded
 Priority: optional
 Section: utils
 Version: %VERSION%
@@ -11,3 +11,4 @@ Description: OpenMono Developer Environment and utilities
  programmed with this toolkit. THis package includes the software
  library (called Mono Framework), device programmer (monoprog) and
  the monomake utility, to create new application projects.
+ 
