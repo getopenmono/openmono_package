@@ -24,9 +24,9 @@ function symbolicLink {
     ln -s "../openmono/$1" "$DISTDIR/usr/local/bin/$2"
 }
 
-if [ -e "$DISTDIR" ]; then
-    rm -rf "$DISTDIR"
-fi
+# if [ -e "$DISTDIR" ]; then
+#     rm -rf "$DISTDIR"
+# fi
 checkExists git
 clonePsoc5Library
 modifyMakefile $PSOC5_LIB_NAME
