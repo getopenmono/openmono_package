@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION=1.0
-DOWNLOAD_URL="http://maggie3.local:8000/openmono_1.0.deb"
+DOWNLOAD_URL="https://github.com/getopenmono/openmono_package/releases/download/untagged-65de5e865756fee9e64a/openmono_1.0.deb"
 FILENAME=`basename $DOWNLOAD_URL`
 export DEBIAN_FRONTEND=noninteractive
 
