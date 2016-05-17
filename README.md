@@ -1,103 +1,48 @@
-# Mono Application Project Template
+# Mono Tool chain Installers
 
-The standard project template for mono applications. This template includes the complete mono framework as static libraries. It also includes three template application files:
+This repository contains the build tools for the tool chain installer packages. We have installers for:
 
- * `main.cpp`: The application entry point. Used to setup the runtime environment. *You do not need to edit this file.*
- 
- * `app_controller.h`: You app's main controller class. All mono apps must have one `AppController`object.
- 
- * `app_controller.cpp`: A default implementation of the `AppController` class. It is here you write your code :-)
+* Windows (64 bit / 32 bit)
+* Mac OS X (10.10 (*Mavericks*) or newer)
+* Ubuntu / Debian
 
-## Getting started
+The tool chain consists of the following in-house tools:
 
-### 1. Download the template
-You can find relase versions under the *[Releases](https://github.com/getopenmono/project_template/releases)* tab above.
+* **[monoprog](https://github.com/getopenmono/monoprog)**: An USB HID programmer for Mono's bootloader
+* **monomake**: An application project template creator and generic utility
+  * *Linux / OS X*: The *monomake* bash shell script is found in this repository
+  * *Windows*: The C# version can be found here: [win_reset_tool](https://github.com/getopenmono/win_reset_tool)
+* **reboot.py** / **reset.exe**: A python or C# app. to use the serial port to reset Mono, using the UART DTR signal.
+* **[mbed](https://developer.mbed.org/users/mbed_official/code/mbed-src/)**: An ARM Cortex-M microcontroller library with `stdio.h` features
+* **[Mono Framework](https://github.com/getopenmono/mono_framework)**: Our embedded software framework, that you build your application on.
 
-### 2. Get ARM GCC
-To compile mono applications, you need a compiler that supports the ARM Cortex-M3 MCU. We think the best one is ARM GCC. It's free, and you can download it pre-compiled. (Compiling compilers is kinda hairy.)
+The tool chain installer also install these third party tools:
 
-Specifically you should use the **ARM GCC NONE EABI** version.[^1] You can download it from [Launchpad](https://launchpad.net/gcc-arm-embedded).
+* **[GCC ARM Embedded](https://launchpad.net/gcc-arm-embedded)**: A Arm Cortex-M port of GCC that comes pre-compiled with C and C++ libraries (newlib-nano)
+* **[GNU Make](https://www.gnu.org/software/make/)**: The *good olde* make util for running makefiles
+* **[Qt](https://www.qt.io/download-open-source/) core**: *monoprog* depend on Qt Core libraries
+* **[PySerial](https://github.com/pyserial/pyserial)**: (OS X & Linux Only) Library to access serials port through python
 
-### 3. Setup the `Makefile`
-Now you must define the path to your installation of ARM GCC NONE EABI. Say you are on Linux or Mac and installed the compiler here:
+## Windows
 
-```
-/usr/local/gcc-arm-none-eabi-4_9-2015q3
-```
+To run on windows you need at least Windows 7 or newer. (The installation might work on Vista or XP, but you did not hear that from us!)
 
-Or if Windows:
+The tool chain needs .NET Framework higher than 3.5. If you do not have the Visual C++ libraries the installer will install *VC++ Redistributable* for you.
 
-```
-C:/gcc-arm-none-eabi-4_9-2015q3
-```
+## Mac OS X
 
-Now you must reference the GCC installation in the projects `Makefile`. Open the Makefile and navigate to line 2, you should see something like this:
+The install package contains most of the needed tools. On OS X 10.10 (Mavericks) or newer, the first time you run the tool chain the system will detect the missing tools and ask to install them.
 
-```
-1  TARGET = mono_project
-2  ARCH="/usr/local/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-"
-```
+If you use OS X 10.9 (Mountain Lion) or older the system will not automatically install the tools, you need to download and install the Developer Command Line Utilities from Apple's Developer site.
 
-Change the `ARCH` property to point to your GCC installation path. *Remember to add the `/bin/arm-none-eabi-`, after the path to the GCC main directory.*
+## Ubuntu / Debian
 
-To test that everything works, open a command window (terminal) and `cd` to the project folder. Type `make` to build the project - it will compile and link.
+We have a api-get package - but no online repo for distributing it. To help you use the `dpkg` tool, we have created an install script that:
 
-If you encounter errors, check that you entered the correct path again.[^2]
+1. Adds the APT repository for the GCC Arm Embedded team
+1. Updates the apt-get cache
+1. Downloads the mono tool chain `.deb` package
+1. Installs the package
+1. Installs the packages dependencies
+1. Installs python package manager and gets the *PySerial* package.
 
-### 4. Code
-
-You are ready to begin coding! Fire up your favorite text editor and open the 3 files. Here is a quick intro to what their purpose on this earth are:
-
-#### The `main` function
-
-This is the entry point of the application. There are already 4 lines of code here. Lets examine them one by one:
-
-```cpp
-int main()
-{
-    AppController app;                                             // 1.
-    mono::IApplicationContext::Instance->setMonoApplication(&app); // 2.
-    app.enterRunLoop();                                            // 3.
-    return 0;                                                      // 4.
-}
-```
-
-1. First the required AppController is instantiated. This is the class defined in `app_controller.h`.
-
-2. All mono applications have a global static object called the `ApplicationContext`, that orchestrates the runtime environment. It handles things like power modes, I/O and the run loop. In this line we assign the `AppController` object to the `ApplicationContext`.
-
-3. We begin executing the applications global run loop. To enabled timers, touch events, display painting and asynchronous function execution, the application implements a run loop.
-
-4. Lastly C++ requires us to return an integer from the `main` function. But this code will never be reached, since the application's run loop will never return.
-
-#### The `AppController` class
-
-If you take a look in `app_controller.h`, you find three methods:
-
-* `monoWakeFromReset()`
-* `monoWillGotoSleep()`
-* `monoWakeFromSleep()`
-
-These methods are event callbacks and required by the AppController.
-
-##### `monoWakeFromReset()`
-
-This is the entry function of you code. It is called automatically when mono powers up, after a reset or power outage. You can think of it like Arduino's `setup()` function.
-
-##### `monoWillGotoSleep()`
-
-This method is called automatically when mono will enter sleep mode, to save power. If  you want to do any house-keeping before mono goes to sleep, do it in this method.
-
-##### `monoWakeFromSleep()`
-
-When mono wakes up from sleep this method is automatically called. Use this method to initialize saved data or restore states. Also, you should schedule repaint of your UI views.
-
-## Further reading
-
-If you would like a more in-depth introduction on how to code mono, I will recommend one of our getting started guides.
-
-These will be available soon on [openmono.com](http://openmono.com/)
-
-[^1]: The NONE EABI means that it builds *bare metal* executables. This means executables that run with no OS, (like Embedded Linux). Since Mono dont have an OS, we use the *bare metal* GCC compiler.
-
-[^2]: I assume that you have build tools installed, like `make`.
