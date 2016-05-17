@@ -3,7 +3,7 @@
 This repository contains the build tools for the tool chain installer packages. We have installers for:
 
 * Windows (64 bit / 32 bit)
-* Mac OS X (10.10 (*Mavericks*) or newer)
+* Mac OS X (10.9 (*Mavericks*) or newer)
 * Ubuntu / Debian
 
 The tool chain consists of the following in-house tools:
@@ -31,9 +31,9 @@ The tool chain needs .NET Framework higher than 3.5. If you do not have the Visu
 
 ## Mac OS X
 
-The install package contains most of the needed tools. On OS X 10.10 (Mavericks) or newer, the first time you run the tool chain the system will detect the missing tools and ask to install them.
+The install package contains most of the needed tools. On OS X 10.9 (Mavericks) or newer, the first time you run the tool chain the system will detect the missing tools and ask to install them.
 
-If you use OS X 10.9 (Mountain Lion) or older the system will not automatically install the tools, you need to download and install the Developer Command Line Utilities from Apple's Developer site.
+If you use OS X 10.8 (Mountain Lion) or older the system will not automatically install the tools, you need to download and install the Developer Command Line Utilities from Apple's Developer site.
 
 ## Ubuntu / Debian
 
