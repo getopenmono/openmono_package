@@ -126,7 +126,7 @@ function compileMonoprog {
 	cd $MONOPROG_NAME
 	./compile.sh
 	cd ..
-	echo "Copying to monoprog dist..."
+	echo "Copying to monoprog dist... ($1 --> $2)"
 	mkdir -p $2
 	cp -r $1 $2
 }
@@ -202,16 +202,17 @@ function makeConfigurationFile {
 }
 
 function copyFiles {
-	echo "Copying $1 to dist..."
+	echo "Copying $1 to dist... ($2 --> $3)"
 	cp -r $2 $3
 }
 
 function modifyMakefile {
-	if [ $2 == "" ]; then
-		$2 ="\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+	ARCH="ARCH=$2"
+	if [ -z "$2" ]; then
+		echo "Using default GCC ARCH value: \"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+		ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
 	fi
 	
-	ARCH="ARCH=$2"
 	echo "replacing GCC file path in makefile to: $ARCH"
 	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
 
@@ -247,4 +248,35 @@ function modifyMakefile {
 	echo "replacing PACKAGE_TARGET dir: $PACKAGE_TARGET"
 	sed -i.bak "s#PACKAGE_TARGET=.*#PACKAGE_TARGET=$PACKAGE_TARGET#g" $1/Makefile
 
+}
+
+function thinGcc {
+	echo "Thinning GCC: docs"
+	deleteSilent ./$1/share/doc
+	
+	echo "Thinning GCC: samples"
+	deleteSilent ./$1/share/gcc-arm-none-eabi/samples
+	
+	echo "Thinning GCC: armv6-m, armv7-ar, armv7e-m, armv8-m & fpu libs"
+	LIBS="./$1/lib/gcc/arm-none-eabi/5.2.1"
+	deleteSilent $LIBS/armv6-m
+	deleteSilent $LIBS/armv7-ar
+	deleteSilent $LIBS/armv7e-m
+	deleteSilent $LIBS/armv8-m.base
+	deleteSilent $LIBS/armv8-m.main
+	deleteSilent $LIBS/fpu
+	
+	LIBS="./$1/arm-none-eabi/lib"
+	deleteSilent $LIBS/armv6-m
+	deleteSilent $LIBS/armv7-ar
+	deleteSilent $LIBS/armv7e-m
+	deleteSilent $LIBS/armv8-m.base
+	deleteSilent $LIBS/armv8-m.main
+	deleteSilent $LIBS/fpu
+}
+
+function deleteSilent {
+	if [ -e $1 ]; then
+		rm -r $1
+	fi
 }
