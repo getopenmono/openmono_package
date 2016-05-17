@@ -180,7 +180,14 @@ function writePSConfigurationFile {
 
 function makeConfigurationFile {
 	echo "Writing $1..."
-	echo "ARCH=\"\$(MONO_PATH)/$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\"" > $1
+	
+	if [ "$4" = "" ]; then
+		echo "ARCH=\"\$(MONO_PATH)/$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\"" > $1
+	else
+		echo "Writing custom Makefile ARCH variable: $4"
+		echo "ARCH=\"$4\"" > $1
+	fi
+	
 	echo "INCLUDE_DIR=\$(MONO_PATH)/mono/include/mbed/target_cypress" >> $1
 	echo "BUILD_DIR=build" >> $1
 	echo "MONO_FRAMEWORK_PATH=\$(MONO_PATH)/mono" >> $1
@@ -200,7 +207,11 @@ function copyFiles {
 }
 
 function modifyMakefile {
-	ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+	if [ $2 == "" ]; then
+		$2 ="\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+	fi
+	
+	ARCH="ARCH=$2"
 	echo "replacing GCC file path in makefile to: $ARCH"
 	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
 

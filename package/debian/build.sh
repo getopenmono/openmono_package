@@ -16,31 +16,43 @@ function symbolicLink {
     ln -s "../lib/openmono/$1" "$PKGROOT/usr/bin/$2"
 }
 
-checkExists git
-clonePsoc5Library
-modifyMakefile $PSOC5_LIB_NAME
-buildPsoc5Library
-cloneMbedLibrary
-cloneMbedCompLibrary
-modifyMakefile $MBEDCOMP_LIB_NAME
-buildMbedCompLibrary
-cloneMonoFramework
-modifyMakefile $MONOFRMWRK_NAME
-buildMonoFramework
+if [ -d $PKGROOT ]; then
+	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
+fi
 
-cloneMonoProg
-compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE
+# checkExists git
+#
+# clonePsoc5Library
+# modifyMakefile $PSOC5_LIB_NAME "arm-none-eabi-"
+# buildPsoc5Library
+# cloneMbedLibrary
+# cloneMbedCompLibrary
+# modifyMakefile $MBEDCOMP_LIB_NAME "arm-none-eabi-"
+# buildMbedCompLibrary
+# cloneMonoFramework
+# modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+# buildMonoFramework
+#
+# cloneMonoProg
+# compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.
 
-downloadGcc $GCC_ARM_DEB_URL
-copyGcc $GCC_ARM_DIR_NAME $DIST_DEST_DIR
 copyFiles "binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "framework" $FRAMEWORK_DIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 
 cp $MAKEFILES $DIST_DEST_DIR
 writeConfigurationFile $DIST_DEST_DIR/configuration.sh
-makeConfigurationFile $DIST_DEST_DIR/Configuration.mk ""
-symbolicLink bin/monomake monomake
+makeConfigurationFile $DIST_DEST_DIR/predefines.mk "monoprog" "" "arm-none-eabi-"
+
+mkdir -p $PKGROOT/usr/bin
+
+##UDEV rules
+echo "Creating udev rules for USB device..."
+UDEVDIR=${PKGROOT}/etc/udev/rules.d
+mkdir -p "${UDEVDIR}"
+cp etc-udev-rules.d-openmono.rules "${UDEVDIR}/openmono.rules"
+
+#symbolicLink bin/monomake monomake
 echo "Package setup done"
 
 echo "creating package control file.."
@@ -48,6 +60,7 @@ mkdir -p "${PKGROOT}/DEBIAN"
 
 DEBARCH=$(dpkg --print-architecture)
 sed -e "s;%DEBARCH%;$DEBARCH;g" -e "s;%VERSION%;$VERSION;g" control.template > "${PKGROOT}/DEBIAN/control"
+echo "" >> "${PKGROOT}/DEBIAN/control"
 
 echo "Building package..."
 sudo chown -R root:root "${PKGROOT}"

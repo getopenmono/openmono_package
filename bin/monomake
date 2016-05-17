@@ -6,7 +6,13 @@ APPNAME="monomake"
 MONO_PATH=$(dirname $(dirname `which $APPNAME`))
 if [ -d $MONO_PATH/openmono ]; then
 	MONO_PATH=$MONO_PATH/openmono
+elif [ -d $MONO_PATH/lib/openmono ]; then
+	MONO_PATH=$MONO_PATH/lib/openmono
+else
+	echo "Could not find openmono dir!"
+	exit 1;
 fi
+
 source $MONO_PATH/configuration.sh
 
 PROJECT_FILES="$TEMPLATE_DIR/app_controller.h $TEMPLATE_DIR/app_controller.cpp"

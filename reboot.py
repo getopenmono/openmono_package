@@ -6,7 +6,7 @@ import time
 
 portName = None
 
-if (sys.platform.startswith("darwin")):
+if (sys.platform.startswith("darwin") or sys.platform.startswith("linux")):
     ports = serial.tools.list_ports.comports()
     cnt = []
     for pn in ports:
