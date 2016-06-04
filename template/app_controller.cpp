@@ -15,7 +15,7 @@ AppController::AppController() :
 
     // the label is the full width of screen, set it to be center aligned
     helloLabel.setAlignment(TextLabelView::ALIGN_CENTER);
-    
+
     // set another text color
     helloLabel.setTextColor(display::TurquoiseColor);
 }

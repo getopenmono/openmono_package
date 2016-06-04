@@ -14,10 +14,10 @@ using namespace mono::ui;
 // The App main controller object.
 // This template app will show a "hello" text in the screen
 class AppController : public mono::IApplication {
-    
+
     // This is the text label object that will displayed
     TextLabelView helloLabel;
-    
+
 public:
 
     // The default constructor
@@ -31,7 +31,7 @@ public:
 
     // Called automatically by Mono right after after it wakes from sleep
     void monoWakeFromSleep();
-    
+
 };
 
 #endif /* app_controller_h */
