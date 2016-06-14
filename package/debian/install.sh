@@ -45,7 +45,7 @@ exec_cmd "apt-get update > /dev/null 2>&1"
 #exec_cmd "apt-get -y install gcc-arm-embedded"
 
 print_status "Downloading OpenMono package..."
-exec_cmd "curl -o $FILENAME ${DOWNLOAD_URL}"
+exec_cmd "curl -Lo $FILENAME ${DOWNLOAD_URL}"
 
 print_status "Installing OpenMono..."
 exec_cmd_nobail "dpkg -i openmono_$VERSION.deb"
