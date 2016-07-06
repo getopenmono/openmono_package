@@ -111,7 +111,6 @@ includeFiles:
 	@echo $(INCS)
 
 install: $(TARGET).elf
-	@$(MONOMAKE) reboot
 	@echo "Programming app to device..."
 	$(MONOPROG) -p $(TARGET).elf --verbose 1
 

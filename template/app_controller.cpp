@@ -1,12 +1,11 @@
 
-
 #include "app_controller.h"
 
 using namespace mono::geo;
 
 // Contructor
-// initializes the label object with position and text content
-// You should init data here, since I/O is not setup yet.
+// Initializes the label object with position and text content
+// You should init only data here, since I/O is not setup yet.
 AppController::AppController() :
 
     // Call the TextLabel's constructor, with a Rect and a static text
@@ -38,12 +37,14 @@ void AppController::monoWillGotoSleep()
 
 void AppController::monoWakeFromSleep()
 {
-    // Due to a software bug in the wake-up routines, we need to reset here!
-    // If not, Mono will go into an infinite loop!
+    // The Cypress USB port does not work after wake up from deep sleep!
+    // To make the USB port work again, we must reset.
+    // Remove the line below, to just wake up without the USB port working.
+    // See more here: http://developer.openmono.com/en/latest/tutorials/sleep-mode.html#sleep-and-usb
     mono::IApplicationContext::SoftwareResetToApplication();
-    // We never reach this point in the code, CPU has reset!
 
-    // (Normally) after sleep, the screen memory has been cleared - tell the label to
+
+    // After sleep, the screen memory has been cleared - tell the label to
     // draw itself again
     helloLabel.scheduleRepaint();
 }

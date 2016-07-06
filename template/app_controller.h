@@ -1,4 +1,5 @@
-
+// Mono Application Template V1.1
+//
 
 #ifndef app_controller_h
 #define app_controller_h

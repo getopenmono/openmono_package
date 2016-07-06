@@ -17,6 +17,17 @@ source $MONO_PATH/configuration.sh
 
 PROJECT_FILES="$TEMPLATE_DIR/app_controller.h $TEMPLATE_DIR/app_controller.cpp"
 
+AUTOCOMPLETE_INCLUDES="-I$MONO_PATH/mono/include\n\
+-I$MONO_PATH/mono/include/display\n\
+-I$MONO_PATH/mono/include/display/ui\n\
+-I$MONO_PATH/mono/include/display/ili9225g\n\
+-I$MONO_PATH/mono/include/io\n\
+-I$MONO_PATH/mono/include/media\n\
+-I$MONO_PATH/mono/include/mbed/api\n\
+-I$MONO_PATH/mono/include/mbed/hal\n\
+-I$MONO_PATH/mono/include/mbed/libraries/fs/sd\n\
+-I$MONO_PATH/mono/include/mbed/target_cypress\n"
+
 function usage {
     echo "OpenMono project utility, creating new projects and access to monoprog"
     echo ""
@@ -73,7 +84,13 @@ function createProjectFolder {
             cp $MONO_PATH/$file $1/.
         done
         writeMakefile $1 $1/Makefile
+        writeAtomEditorProjectFiles $1
     fi
+}
+
+function writeAtomEditorProjectFiles {
+    echo "Atom Project Settings: Writing Auto complete includes..."
+    echo -e "$AUTOCOMPLETE_INCLUDES" > $1/.clang_complete
 }
 
 function probeBootloader {
