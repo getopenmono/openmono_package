@@ -48,7 +48,8 @@ Section "Install" SecInstall
 
 	File /r "dist\*"
 	File "windows.ico"
-	File "mono_psoc5_library\Generated_Source\PSoC5\USBUART_cdc.inf"
+	File "USBUART_cdc.inf"
+	File "USBUART_cdc.cat"
 
 	${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$INSTDIR\bin"
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -68,7 +69,7 @@ Section "Install" SecInstall
 
 	!include x64.nsh
 	${DisableX64FSRedirection}
-	nsExec::ExecToLog '"$SYSDIR\PnPutil.exe" /a "$INSTDIR\USBUART_cdc.inf"' $0
+	nsExec::ExecToLog '"$SYSDIR\PnPutil.exe" /i /a "$INSTDIR\USBUART_cdc.inf"' $0
 	${EnableX64FSRedirection}
 
 	Delete "$INSTDIR/${MSVS_FILE}"
