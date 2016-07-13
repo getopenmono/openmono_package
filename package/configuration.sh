@@ -21,7 +21,7 @@ MAKEFILES_WIN="$MAKEFILES reset.exe"
 
 MONOPROG_GIT_URL="https://github.com/getopenmono/monoprog.git"
 MONOPROG_REVISION="HEAD"
-MONOPROG_NAME="monoprog"
+MONOPROG_NAME="monoprog/src"
 MONOPROG_MAC_EXECUTABLE="bin/monoprog.app"
 MONOPROG_MAC_EXECUTABLE_BINARY="Contents/MacOS/monoprog"
 MONOPROG_DEB_EXECUTABLE="bin/monoprog"

@@ -133,11 +133,12 @@ function compileMonoprog {
 
 function compileMonoprogWin {
 	echo "Compiling monoprog..."
+	CUR_DIR=`pwd`
 	cd $MONOPROG_NAME
 	./configuration.bat
 	qmake -tp vc monoprog.pro
 	MSBuild.exe monoprog.vcxproj //p:Configuration=Release //p:Platform=x64
-	cd ..
+	cd $CUR_DIR
 	echo "Copying to monoprog dist..."
 	mkdir -p $2
 	cp -r $1 $2
