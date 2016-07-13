@@ -38,10 +38,11 @@ function cloneMonoProg {
 		git clone $MONOPROG_GIT_URL $MONOPROG_NAME
 	else
 		echo "Pulling monoprog changes from GitHub..."
+		CUR_DIR=`pwd`
 		cd $MONOPROG_NAME
 		git checkout -- .
 		git pull
-		cd ..
+		cd $CUR_DIR
 	fi
 }
 
@@ -123,9 +124,10 @@ function buildMonoFramework {
 
 function compileMonoprog {
 	echo "Compiling monoprog..."
+	CUR_DIR=`pwd`
 	cd $MONOPROG_NAME
 	./compile.sh
-	cd ..
+	cd $CUR_DIR
 	echo "Copying to monoprog dist... ($1 --> $2)"
 	mkdir -p $2
 	cp -r $1 $2
