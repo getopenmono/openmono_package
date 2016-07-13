@@ -4,3 +4,12 @@ BUILD_DIR=build
 MONO_FRAMEWORK_PATH=$(MONO_PATH)/mono
 MONOPROG=monomake monoprog
 SH_MONOMAKE=monomake
+
+OPTIMIZATION = -O0
+
+
+OBJECTS =		$(patsubst %.c,%.o,$(wildcard *.c)) \
+				$(patsubst %.cpp,%.o,$(wildcard *.cpp))
+
+TARGET_HEADERS=	$(wildcard ./*.h) \
+				$(wildcard ./*.hpp)

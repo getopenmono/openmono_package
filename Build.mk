@@ -3,15 +3,8 @@ FLASH_ROW_SIZE=256
 FLASH_ARRAY_SIZE=65536
 EE_ARRAY=64
 EE_ROW_SIZE=16
-OPTIMIZATION = -O0
 CYPRESS_DIR=$(INCLUDE_DIR)
 LINKER_SCRIPT=$(INCLUDE_DIR)/cm3gcc.ld
-
-OBJECTS =		$(patsubst %.c,%.o,$(wildcard *.c)) \
-				$(patsubst %.cpp,%.o,$(wildcard *.cpp))
-
-TARGET_HEADERS=	$(wildcard ./*.h) \
-				$(wildcard ./*.hpp)
 
 CYLIB_INCLUDES= $(INCLUDE_DIR)
 
