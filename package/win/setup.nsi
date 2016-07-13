@@ -29,7 +29,7 @@ FunctionEnd
 !define MUI_BGCOLOR "ecf0f1"
 
 ; ---- Pages
-!insertmacro MUI_PAGE_LICENSE "monoprog\LICENSE.txt"
+!insertmacro MUI_PAGE_LICENSE "monoprog\src\LICENSE.txt"
 !insertmacro MUI_PAGE_INSTFILES
 
 !insertmacro MUI_UNPAGE_CONFIRM
