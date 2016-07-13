@@ -1,4 +1,4 @@
-set VERSION=1.0.12
+set VERSION=1.1.1
 set QTRUNTIME=C:\Qt\Qt5.4.1\5.4\msvc2013_64_opengl
 set ARCH=64
 set VCREDIST=vcredist_x64.exe
