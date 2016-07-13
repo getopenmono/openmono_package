@@ -73,6 +73,7 @@ cloneMonoProg
 compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
 downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X64_REDIST_URL
 downloadGcc $GCC_ARM_WIN_URL
+thinGcc $WIN_GCC_ARM_DIR_NAME
 copyGcc $WIN_GCC_ARM_DIR_NAME $DIST_DEST_DIR
 copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 #copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
