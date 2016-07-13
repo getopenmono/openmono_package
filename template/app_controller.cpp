@@ -37,13 +37,6 @@ void AppController::monoWillGotoSleep()
 
 void AppController::monoWakeFromSleep()
 {
-    // The Cypress USB port does not work after wake up from deep sleep!
-    // To make the USB port work again, we must reset.
-    // Remove the line below, to just wake up without the USB port working.
-    // See more here: http://developer.openmono.com/en/latest/tutorials/sleep-mode.html#sleep-and-usb
-    mono::IApplicationContext::SoftwareResetToApplication();
-
-
     // After sleep, the screen memory has been cleared - tell the label to
     // draw itself again
     helloLabel.scheduleRepaint();
