@@ -35,7 +35,7 @@ function copyGcc {
 function cloneMonoProg {
 	if [ ! -d $MONOPROG_NAME ]; then
 		echo "Cloing monoprog from GitHub..."
-		git clone $MONOPROG_GIT_URL $MONOPROG_NAME
+		git clone $MONOPROG_GIT_URL
 	else
 		echo "Pulling monoprog changes from GitHub..."
 		CUR_DIR=`pwd`
@@ -183,12 +183,14 @@ function writePSConfigurationFile {
 
 function makeConfigurationFile {
 	echo "Writing $1..."
+	echo "# This is an auto generated file for OpenMono SDK $VERSION" > $1
+	echo "" >> $1
 	
 	if [ "$4" = "" ]; then
-		echo "ARCH=\"\$(MONO_PATH)/$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\"" > $1
+		echo "ARCH=\"\$(MONO_PATH)/$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\"" >> $1
 	else
 		echo "Writing custom Makefile ARCH variable: $4"
-		echo "ARCH=\"$4\"" > $1
+		echo "ARCH=\"$4\"" >> $1
 	fi
 	
 	echo "INCLUDE_DIR=\$(MONO_PATH)/mono/include/mbed/target_cypress" >> $1
@@ -201,7 +203,7 @@ function makeConfigurationFile {
 	else
 		echo "MONOMAKE=$3" >> $1
 	fi
-	
+	cat ../../predefines_statics.mk >> $1
 }
 
 function copyFiles {
