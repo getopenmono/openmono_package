@@ -155,7 +155,7 @@ function writeConfigurationFile {
 	echo "" >> $1
 	echo "TEMPLATE_DIR=$(basename $TEMPLATE_DIR)" >> $1
 	echo "MAKEFILE_DIR=\$MONO_PATH" >> $1
-	echo "MONOPROG_DIR=\$MONO_PATH/$MONOPROG_NAME/$2" >> $1
+	echo "MONOPROG_DIR=\$MONO_PATH/monoprog/$2" >> $1
 	if [ "$3" = "" ]; then
 		echo "Using default Bash monomake tool, in configuration."
 		echo "MONOMAKE=$MONOMAKE_BASH" >> $1
