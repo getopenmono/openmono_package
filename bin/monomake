@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-VERSION="1.1.3"
+VERSION="1.2.1"
 APPNAME="monomake"
 MONO_PATH=$(dirname $(dirname `which $APPNAME`))
 if [ -d $MONO_PATH/openmono ]; then
@@ -66,15 +66,23 @@ function writeMakefile {
 
 function projectCommand {
     if [ $# -gt 1 ]; then
-        if [ $2 = "--bare" ]; then
-            echo "Creating new bare mono project: $3..."
-            createBareProjectFolder $3
-        elif [$3 = "--bare" ]; then
-            echo "Creating new bare mono project: $2..."
-            createBareProjectFolder $2
+        if [ $# -gt 2 ]; then
+            if [ $2 = "--bare" ]; then
+                echo "Creating new bare mono project: $3..."
+                createBareProjectFolder $3
+            elif [ $3 = "--bare" ]; then
+                echo "Creating new bare mono project: $2..."
+                createBareProjectFolder $2
+            else
+                echo "Creating new mono project: $2..."
+                createProjectFolder $2
+            fi
+        elif [ $2 = "--bare" ]; then
+            echo "Creating new bare mono project: new_mono_project..."
+            createBareProjectFolder "new_mono_project"
         else
             echo "Creating new mono project: $2..."
-            createBareProjectFolder $2
+            createProjectFolder $2
         fi
     elif [ $# -eq 1 ]; then
         echo "Creating new mono project: new_mono_project..."
