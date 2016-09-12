@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-VERSION="1.1.2"
+VERSION="1.1.3"
 APPNAME="monomake"
 MONO_PATH=$(dirname $(dirname `which $APPNAME`))
 if [ -d $MONO_PATH/openmono ]; then
@@ -16,6 +16,7 @@ fi
 source $MONO_PATH/configuration.sh
 
 PROJECT_FILES="$TEMPLATE_DIR/app_controller.h $TEMPLATE_DIR/app_controller.cpp"
+BARE_PROJECT_FILES="$TEMPLATE_DIR/app_controller_bare.h $TEMPLATE_DIR/app_controller_bare.cpp"
 
 AUTOCOMPLETE_INCLUDES="-I$MONO_PATH/mono/include\n\
 -I$MONO_PATH/mono/include/display\n\
@@ -35,13 +36,13 @@ function usage {
     echo "${APPNAME} COMMAND [options]"
     echo ""
     echo "Commands:"
-    echo "  project [name]  Create a new project folder. Default name is: new_mono_project"
-    echo "  monoprog [...]  Shortcut to access the MonoProg USB programmer"
-    echo "  -p ELF_FILE     Upload an application to mono"
-    echo "  reboot          Send Reboot command to Mono, using the Arduino DTR method"
-    echo "  bootldr         See if a mono is connected and in bootloader"
-    echo "  version         Display the current version of $APPNAME"
-    echo "  path            Display the path to the Mono Environment installation dir"
+    echo "  project [--bare] [name]  Create a new project folder. Default name is: new_mono_project"
+    echo "  monoprog [...]           Shortcut to access the MonoProg USB programmer"
+    echo "  -p ELF_FILE              Upload an application to mono"
+    echo "  reboot                   Send Reboot command to Mono, using the Arduino DTR method"
+    echo "  bootldr                  See if a mono is connected and in bootloader"
+    echo "  version                  Display the current version of $APPNAME"
+    echo "  path                     Display the path to the Mono Environment installation dir"
     echo ""
 }
 
@@ -65,8 +66,16 @@ function writeMakefile {
 
 function projectCommand {
     if [ $# -gt 1 ]; then
-        echo "Creating new mono project: $2..."
-        createProjectFolder $2
+        if [ $2 = "--bare" ]; then
+            echo "Creating new bare mono project: $3..."
+            createBareProjectFolder $3
+        elif [$3 = "--bare" ]; then
+            echo "Creating new bare mono project: $2..."
+            createBareProjectFolder $2
+        else
+            echo "Creating new mono project: $2..."
+            createBareProjectFolder $2
+        fi
     elif [ $# -eq 1 ]; then
         echo "Creating new mono project: new_mono_project..."
         createProjectFolder "new_mono_project"
@@ -82,6 +91,21 @@ function createProjectFolder {
         for file in ${PROJECT_FILES}; do
             echo " * $1/$(basename $file)"
             cp $MONO_PATH/$file $1/.
+        done
+        writeMakefile $1 $1/Makefile
+        writeAtomEditorProjectFiles $1
+    fi
+}
+
+function createBareProjectFolder {
+    if [ -e $1 ]; then
+        echo "Err: Project target directory already exists!"
+        return 1
+    else
+        mkdir -p $1
+        for file in ${BARE_PROJECT_FILES}; do
+            echo " * $1/$(basename $file | sed 's/_bare//')"
+            cp $MONO_PATH/$file $1/$(basename $file | sed 's/_bare//')
         done
         writeMakefile $1 $1/Makefile
         writeAtomEditorProjectFiles $1
@@ -113,7 +137,7 @@ if [ $# -lt 1 ]; then
     echo "ERR: No command argument given! You must provide a command"
     usage
 elif [ $1 == "project" ]; then
-    projectCommand $1 $2
+    projectCommand $1 $2 $3
 elif [ $1 == "reboot" ]; then
     rebootMonoDtr
 elif [ $1 == "monoprog" ]; then
