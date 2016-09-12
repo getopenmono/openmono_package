@@ -5,6 +5,13 @@ EE_ARRAY=64
 EE_ROW_SIZE=16
 CYPRESS_DIR=$(INCLUDE_DIR)
 LINKER_SCRIPT=$(INCLUDE_DIR)/cm3gcc.ld
+ifeq ($(OS),Windows_NT)
+	RM = cmd //C del //Q //F
+	RRM = cmd //C rmdir //Q //S
+else
+	RM = rm -f
+	RRM = rm -f -r
+endif
 
 CYLIB_INCLUDES= $(INCLUDE_DIR)
 
@@ -48,12 +55,9 @@ LDSCRIPT = -T $(LINKER_SCRIPT)
 LD_FLAGS = -g -mcpu=cortex-m3 -mthumb -march=armv7-m -fno-rtti -Wl,--gc-sections -specs=nano.specs 
 LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
-#"libs/CyCompLib.a"
-#   -mfix-cortex-m3-ldrd -u _printf_float -u _scanf_float
 COPY_FLAGS = -j .text -j .eh_frame -j .rodata -j .ramvectors -j .noinit -j .data -j .bss -j .stack -j .heap -j .cyloadablemeta
 
 all: $(BUILD_DIR) $(TARGET).elf
-
 
 $(BUILD_DIR):
 	@echo "creating build directory"
@@ -108,11 +112,9 @@ install: $(TARGET).elf
 	$(MONOPROG) -p $(TARGET).elf --verbose 1
 
 clean:
-	$(RM) $(addprefix $(BUILD_DIR)/, $(notdir $(OBJECTS))) $(addprefix $(BUILD_DIR)/, $(notdir $(SYS_OBJECTS))) $(TARGET).elf $(TARGET).bin
+	$(RM) $(TARGET).elf mono_project.map
+	$(RRM) $(BUILD_DIR)
 
 summary: $(TARGET).elf
 	$(ELFTOOL) -S $(TARGET).elf
 	
-
-## $(LD) -Wl,--start-group $(LD_FLAGS) libs/CyCompLib.a $(LDSCRIPT) -o $@ $^ -Wl,--end-group $(LD_SYS_LIBS)
-## $(ELFTOOL) -C $@ --flash_size $(FLASH_SIZE) --flash_row_size $(FLASH_ROW_SIZE)
