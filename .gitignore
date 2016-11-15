@@ -5,7 +5,7 @@
 *.xcodeproj
 *.vcxproj*
 gcc-arm-none-eabi-*
-package/osx/dist
+package/macos/dist
 package/win/dist
 *.pkg
 .AppleDouble
