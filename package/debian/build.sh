@@ -4,7 +4,7 @@ source ../configuration.sh
 source ../common.sh
 
 BINDIR=../../$BINDIR
-FRAMEWORK_DIR=../../$FRAMEWORK_DIR
+FRAMEWORK_DIR=./mono_framework/dist/$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
 
 PACKAGE=openmono
@@ -17,25 +17,26 @@ function symbolicLink {
 }
 
 if [ -d $PKGROOT ]; then
+    echo "Re-assigning user priviledges..."
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
 
 #checkExists git
 
-clonePsoc5Library
-modifyMakefile $PSOC5_LIB_NAME "arm-none-eabi-"
-buildPsoc5Library
-cloneMbedLibrary
-cloneMbedCompLibrary
-modifyMakefile $MBEDCOMP_LIB_NAME "arm-none-eabi-"
-buildMbedCompLibrary
-cloneMonoFramework
-modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
-buildMonoFramework
+# clonePsoc5Library
+# modifyMakefile $PSOC5_LIB_NAME "arm-none-eabi-"
+# buildPsoc5Library
+# cloneMbedLibrary
+# cloneMbedCompLibrary
+# modifyMakefile $MBEDCOMP_LIB_NAME "arm-none-eabi-"
+# buildMbedCompLibrary
+#cloneMonoFramework
+#modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+#buildMonoFramework
 
-cloneMonoProg
+#cloneMonoProg
 compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.
-
+mkdir -p $DIST_DEST_DIR
 copyFiles "binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "framework" $FRAMEWORK_DIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION=1.2
-GIT_TAG="SDKv1_2"
-DOWNLOAD_URL="https://github.com/getopenmono/openmono_package/releases/download/v$GIT_TAG/openmono_$VERSION.deb"
+VERSION=1.3.3
+GIT_TAG="SDKv1_3"
+DOWNLOAD_URL="https://github.com/getopenmono/openmono_package/releases/download/$GIT_TAG/openmono_$VERSION.deb"
 FILENAME=`basename $DOWNLOAD_URL`
 export DEBIAN_FRONTEND=noninteractive
 
@@ -27,7 +27,7 @@ exec_cmd() {
     exec_cmd_nobail "$1" || bail
 }
 
-print_status "Installing the OpenMono v$VERSION..."
+print_status "Installing the OpenMono $VERSION..."
 
 # # Populating Cache
 print_status "Populating apt-get cache..."
