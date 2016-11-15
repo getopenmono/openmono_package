@@ -23,22 +23,15 @@ fi
 
 #checkExists git
 
-# clonePsoc5Library
-# modifyMakefile $PSOC5_LIB_NAME "arm-none-eabi-"
-# buildPsoc5Library
-# cloneMbedLibrary
-# cloneMbedCompLibrary
-# modifyMakefile $MBEDCOMP_LIB_NAME "arm-none-eabi-"
-# buildMbedCompLibrary
-#cloneMonoFramework
-#modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
-#buildMonoFramework
+# cloneMonoFramework
+# modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+# buildMonoFramework
 
-#cloneMonoProg
-compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.
+# cloneMonoProg
+# compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.
 mkdir -p $DIST_DEST_DIR
 copyFiles "binaries" $BINDIR $DIST_DEST_DIR
-copyFiles "framework" $FRAMEWORK_DIR $DIST_DEST_DIR
+#copyFiles "framework" $FRAMEWORK_DIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 
 cp $MAKEFILES $DIST_DEST_DIR
