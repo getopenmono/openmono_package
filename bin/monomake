@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-VERSION="1.3.0"
+VERSION="1.4"
 APPNAME="monomake"
 MONO_PATH=$(dirname $(dirname `which $APPNAME`))
 if [ -d $MONO_PATH/openmono ]; then
