@@ -24,6 +24,8 @@ function symbolicLink {
     ln -s "../openmono/$1" "$DISTDIR/usr/local/bin/$2"
 }
 
+confirmBuild
+
 # if [ -e "$DISTDIR" ]; then
 #     rm -rf "$DISTDIR"
 # fi

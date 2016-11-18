@@ -1,3 +1,13 @@
+function confirmBuild {
+    echo "Will build package with version $VERSION"
+    read -p "Are you sure? (y/n)" -n 1 -r
+    echo
+    if ! [[ $REPLY =~ ^[yY]$ ]]; then
+        echo "Aborting!"
+        exit
+    fi
+}
+
 function downloadGcc {
 	FILE=$(basename $1)
 	
