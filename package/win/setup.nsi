@@ -2,8 +2,8 @@
 !include "MUI2.nsh"
 !include "EnvVarUpdate.nsh"
 
-Name "OpenMono Developer Environment"
-OutFile "OpenMonoSetup-v$%VERSION%-x$%ARCH%.exe"
+Name "OpenMono SDK"
+OutFile "OpenMonoSetup-v$%VERSION%.exe"
 InstallDir "c:\OpenMono"
 
 !define MSVS_FILE "$%VCREDIST%"
@@ -55,7 +55,7 @@ Section "Install" SecInstall
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
-				 "DisplayName" "OpenMono Developer Environment"
+				 "DisplayName" "OpenMono SDK"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
 				 "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \

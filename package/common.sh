@@ -230,6 +230,10 @@ function modifyMakefile {
 	
 	echo "replacing GCC file path in makefile to: $ARCH"
 	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
+	ARCH="ARCH=\"../../\"$2"
+	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/cypress/Makefile
+	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/mbedcomp/Makefile
+	
 
     # INCLUDE_DIR=../$PSOC5_LIB_NAME/include
     # echo "replacing include dir: $INCLUDE_DIR"
