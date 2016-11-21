@@ -24,8 +24,13 @@ function checkExists {
 }
 
 if ! [ -f "./$WIN_CERT" ]; then
-	echo "Connat build, the app certificate ($WIN_CERT) cannot be found!"
-	exit
+	echo "Build cannot finish, the app certificate ($WIN_CERT) cannot be found!"
+	read -p "Do you want to continue? (y/n)" -n 1 -r
+	echo
+    if ! [[ $REPLY =~ ^[yY]$ ]]; then
+        echo "Aborting!"
+        exit
+    fi
 fi
 
 confirmBuild

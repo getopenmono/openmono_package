@@ -128,9 +128,16 @@ function buildMonoFramework {
 	echo "Compiling mono framework..."
 	cd $MONOFRMWRK_NAME
 	make clean
+	SUCCESS=$?
+    if [ ! $SUCCESS ]; then
+    	echo "ERROR: Build was unsuccessful. Aborting!"
+        exit 1
+    fi
+    
 	make release
     SUCCESS=$?
     if [ ! $SUCCESS ]; then
+    	echo "ERROR: Build was unsuccessful. Aborting!"
         exit 1
     fi
 	cd ..
@@ -255,10 +262,10 @@ function modifyMakefile {
             echo "ERROR: No compiler found at: $1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-"
             exit 1
         fi
-    elif [[ $2 =~ ^[\./] ]]; then
+    elif [[ $2 =~ ^\"?[\.\/].+$ ]]; then
         ARCH="ARCH=\"../../\"$2"
     else
-        echo "GCC is in path"
+        echo "GCC is in path!"
     fi
     
     echo "   - and recursive harmful makefiles to: $ARCH"
