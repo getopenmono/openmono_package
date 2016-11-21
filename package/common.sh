@@ -129,6 +129,10 @@ function buildMonoFramework {
 	cd $MONOFRMWRK_NAME
 	make clean
 	make release
+    SUCCESS=$?
+    if [ ! $SUCCESS ]; then
+        exit 1
+    fi
 	cd ..
 }
 
@@ -222,8 +226,13 @@ function copyFiles {
 }
 
 function modifyMakefile {
-    ARCH="ARCH=$2"
-
+    IN_PATH=`hash $2gcc`
+    EXISTS=$?
+    if [ ! $EXISTS ]; then
+        echo "ERROR: No GCC executable on $2!"
+        exit 1
+    fi
+    
     if [ -z "$2" ]; then
         echo "Using default GCC ARCH value: \"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
         
@@ -234,58 +243,32 @@ function modifyMakefile {
         
         ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
     else
-        if ! [ -f "$2-gcc" ]; then
-            echo "ERROR: No GCC compiler found at: $2"
-            exit 1
-        fi
+        ARCH="ARCH=$2"
     fi
     
     echo "replacing GCC file path in makefile to: $ARCH"
     sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
-    if ! [ -z "$2" ]; then
-        ARCH="ARCH=\"../../\"$2"
-    else
+    if [ -z "$2" ]; then
         ARCH="ARCH=\"../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
         
         if ! [ -f "$1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-gcc" ]; then
             echo "ERROR: No compiler found at: $1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-"
             exit 1
         fi
+    elif [[ $2 =~ ^[\./] ]]; then
+        ARCH="ARCH=\"../../\"$2"
+    else
+        echo "GCC is in path"
     fi
     
-    echo "   - and recursive hardful makefiles to: $ARCH"
+    echo "   - and recursive harmful makefiles to: $ARCH"
     
     sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/cypress/Makefile
     sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/mbedcomp/Makefile
 
-
-    # INCLUDE_DIR=../$PSOC5_LIB_NAME/include
-    # echo "replacing include dir: $INCLUDE_DIR"
-    # sed -i.bak "s#INCLUDE_DIR=.*#INCLUDE_DIR=$INCLUDE_DIR#g" $1/Makefile
-
-    # CYPRESS_DIR=../$PSOC5_LIB_NAME/Generated_Source/PSoC5
-    # echo "replacing CYPRESS_DIR dir: $CYPRESS_DIR"
-    # sed -i.bak "s#CYPRESS_DIR=.*#CYPRESS_DIR=$CYPRESS_DIR#g" $1/Makefile
-
-    # CYPRESS_LIB=../$PSOC5_LIB_NAME/lib/monoCyLib.a
-    # echo "replacing CYPRESS_LIB dir: $CYPRESS_LIB"
-    # sed -i.bak "s#CYPRESS_LIB=.*#CYPRESS_LIB=$CYPRESS_LIB#g" $1/Makefile
-
 	MONO_FRAMEWORK_PATH=../$MONOFRMWRK_NAME
 	echo "replacing MONO_FRAMEWORK_PATH dir: $MONO_FRAMEWORK_PATH"
 	sed -i.bak "s#MONO_FRAMEWORK_PATH=.*#MONO_FRAMEWORK_PATH=$MONO_FRAMEWORK_PATH#g" $1/Makefile
-
-    # MBED_FS=../$MBED_LIB_NAME/libraries/fs
-    # echo "replacing MBED_FS dir: $MBED_FS"
-    # sed -i.bak "s#MBED_FS=.*#MBED_FS=$MBED_FS#g" $1/Makefile
-
-    # COMP_LIB=../$PSOC5_LIB_NAME/lib/CyComponentLibrary.a
-    # echo "replacing COMP_LIB dir: $COMP_LIB"
-    # sed -i.bak "s#COMP_LIB=.*#COMP_LIB=$COMP_LIB#g" $1/Makefile
-
-    # MONO_LIB=../$PSOC5_LIB_NAME/lib/monoCyLib.a
-    # echo "replacing MONO_LIB dir: $MONO_LIB"
-    # sed -i.bak "s#MONO_LIB=.*#MONO_LIB=$MONO_LIB#g" $1/Makefile
 
 	PACKAGE_TARGET=../$DIST_DEST_DIR
 	echo "replacing RELEASE_DIR dir: $PACKAGE_TARGET"

@@ -16,6 +16,8 @@ function symbolicLink {
     ln -s "../lib/openmono/$1" "$PKGROOT/usr/bin/$2"
 }
 
+confirmBuild
+
 if [ -d $PKGROOT ]; then
     echo "Re-assigning user priviledges..."
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
