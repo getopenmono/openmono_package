@@ -222,18 +222,42 @@ function copyFiles {
 }
 
 function modifyMakefile {
-	ARCH="ARCH=$2"
-	if [ -z "$2" ]; then
-		echo "Using default GCC ARCH value: \"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
-		ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
-	fi
-	
-	echo "replacing GCC file path in makefile to: $ARCH"
-	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
-	ARCH="ARCH=\"../../\"$2"
-	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/cypress/Makefile
-	sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/mbedcomp/Makefile
-	
+    ARCH="ARCH=$2"
+
+    if [ -z "$2" ]; then
+        echo "Using default GCC ARCH value: \"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+        
+        if ! [ -f "$1/../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-gcc" ]; then
+            echo "ERROR: No GCC compiler found at: $1/../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-!"
+            exit 1
+        fi
+        
+        ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+    else
+        if ! [ -f "$2-gcc" ]; then
+            echo "ERROR: No GCC compiler found at: $2"
+            exit 1
+        fi
+    fi
+    
+    echo "replacing GCC file path in makefile to: $ARCH"
+    sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/Makefile
+    if ! [ -z "$2" ]; then
+        ARCH="ARCH=\"../../\"$2"
+    else
+        ARCH="ARCH=\"../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+        
+        if ! [ -f "$1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-gcc" ]; then
+            echo "ERROR: No compiler found at: $1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-"
+            exit 1
+        fi
+    fi
+    
+    echo "   - and recursive hardful makefiles to: $ARCH"
+    
+    sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/cypress/Makefile
+    sed -i.bak "s#ARCH=\".*\"#$ARCH#g" $1/src/mbedcomp/Makefile
+
 
     # INCLUDE_DIR=../$PSOC5_LIB_NAME/include
     # echo "replacing include dir: $INCLUDE_DIR"
