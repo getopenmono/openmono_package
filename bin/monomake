@@ -30,7 +30,8 @@ AUTOCOMPLETE_INCLUDES="-I$MONO_PATH/mono/include\n\
 -I$MONO_PATH/mono/include/mbed/target_cypress\n"
 
 function usage {
-    echo "OpenMono project utility, creating new projects and access to monoprog"
+    echo "OpenMono SDK Utility $VERSION"
+	echo "Create new projects, access monoprog and other helper functions"
     echo ""
     echo "Usage:"
     echo "${APPNAME} COMMAND [options]"
@@ -38,16 +39,21 @@ function usage {
     echo "Commands:"
     echo "  project [--bare] [name]  Create a new project folder. Default name is: new_mono_project"
     echo "  monoprog [...]           Shortcut to access the MonoProg USB programmer"
-    echo "  -p ELF_FILE              Upload an application to mono"
+    echo "  program ELF_FILE         Upload an application to mono"
     echo "  reboot                   Send Reboot command to Mono, using the Arduino DTR method"
-    echo "  bootldr                  See if a mono is connected and in bootloader"
-    echo "  version                  Display the current version of $APPNAME"
-    echo "  path                     Display the path to the Mono Environment installation dir"
+    echo "  detect                   See if a mono is connected and if it is in bootloader"
+	echo "  serial                   Return Mono's serial device file path: /dev/..."
+    echo "  version [--bare]         Display the current version of $APPNAME"
+    echo "  path [--bare]            Display the path to the Mono Environment installation dir"
     echo ""
 }
 
 function printMonoPath {
-    echo "Mono Environment Path: $MONO_PATH"
+	if [[ $# -ge 1 && $1 == "--bare" ]]; then
+		echo $MONO_PATH
+	else
+    	echo "Mono Environment Path: $MONO_PATH"
+	fi
 }
 
 function writeMakefile {
@@ -126,24 +132,33 @@ function writeAtomEditorProjectFiles {
 }
 
 function probeBootloader {
-    $MONOPROG_DIR/monoprog -d
+	$MONOPROG_DIR/monoprog -d
 }
 
 function monoprog {
-    $MONOPROG_DIR/monoprog $1 $2 $3 $4
+	$MONOPROG_DIR/monoprog $1 $2 $3 $4
 }
 
 function printVersion {
-    echo "${APPNAME} version ${VERSION}"
+	if [[ $# -ge 1 && $1 == "--bare" ]]; then
+		echo $VERSION
+	else
+		echo "${APPNAME} version ${VERSION}"
+	fi
 }
 
 function rebootMonoDtr {
-    python $MONO_PATH/reboot.py
+	python $MONO_PATH/reboot.py
+}
+
+function probeSerial {
+	python $MONO_PATH/probe_serial.py
 }
 
 if [ $# -lt 1 ]; then
     echo "ERR: No command argument given! You must provide a command"
     usage
+	exit 1
 elif [ $1 == "project" ]; then
     projectCommand $1 $2 $3
 elif [ $1 == "reboot" ]; then
@@ -151,14 +166,23 @@ elif [ $1 == "reboot" ]; then
 elif [ $1 == "monoprog" ]; then
     monoprog $2 $3 $4 $5
 elif [ $1 == "version" ]; then
-    printVersion
+    printVersion $2
 elif [ $1 == "path" ]; then
-    printMonoPath
-elif [ $1 == "bootldr" ]; then
+    printMonoPath $2
+elif [ $1 == "detect" -o $1 == "bootldr" ]; then
+	if [ $1 == "bootldr" ];then
+		echo "Note: bootldr is deprecated, use detect instead!"
+	fi
     probeBootloader
-elif [ $1 == "-p" ]; then
+elif [ $1 == "-p" -o $1 == "program" ]; then
+	if [ $1 == "-p" ];then
+		echo "Note: -p is deprecated, use program instead!"
+	fi
     monoprog -p $2 --verbose=2
+elif [ $1 == "serial" ]; then
+	probeSerial
 else
     echo "ERR: Unknown command $1"
     usage
+	exit 1
 fi
