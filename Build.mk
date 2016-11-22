@@ -57,7 +57,7 @@ LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
 COPY_FLAGS = -j .text -j .eh_frame -j .rodata -j .ramvectors -j .noinit -j .data -j .bss -j .stack -j .heap -j .cyloadablemeta
 
-all: $(BUILD_DIR) $(TARGET).elf
+all: clean $(BUILD_DIR) $(TARGET).elf
 
 $(BUILD_DIR):
 	@echo "creating build directory"
@@ -107,7 +107,7 @@ monoFiles:
 includeFiles: 
 	@echo $(INCS)
 
-install: $(TARGET).elf
+install: all
 	@echo "Programming app to device..."
 	$(MONOPROG) -p $(TARGET).elf --verbose 1
 
