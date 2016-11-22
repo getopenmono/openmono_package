@@ -17,7 +17,7 @@ WIN_VC2013_X64_REDIST_URL="https://download.microsoft.com/download/2/E/6/2E61CFA
 WIN_VC2013_X64_REDIST_FILE="vcredist_x64.exe"
 
 MAKEFILES="../../mono_default_main.cpp ../../mono.mk ../../Build.mk ../../reboot.py ../../probe_serial.py"
-MAKEFILES_WIN="$MAKEFILES reset.exe delete_file_silent.bat delete_dir_silent.bat"
+MAKEFILES_WIN="$MAKEFILES reset.exe ../../delete_file_silent.bat ../../delete_dir_silent.bat"
 
 MONOPROG_GIT_URL="https://github.com/getopenmono/monoprog.git"
 MONOPROG_REVISION="HEAD"

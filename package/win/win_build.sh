@@ -51,7 +51,7 @@ copyGcc $WIN_GCC_ARM_DIR_NAME $DIST_DEST_DIR
 copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
-cp $MAKEFILES_WIN $DIST_DEST_DIR
+cp $MAKEFILES_WIN $DIST_DEST_DIR/.
 
 writePSConfigurationFile $DIST_DEST_DIR/configuration.ps1 $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
 makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
