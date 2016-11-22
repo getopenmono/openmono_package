@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=1.4.2
+VERSION=1.4.3
 BINDIR='bin'
 FRAMEWORK_DIR='mono'
 TEMPLATE_DIR='template'
@@ -16,7 +16,7 @@ MSYS_MAKE_DIR="bin"
 WIN_VC2013_X64_REDIST_URL="https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe"
 WIN_VC2013_X64_REDIST_FILE="vcredist_x64.exe"
 
-MAKEFILES="../../mono_default_main.cpp ../../mono.mk ../../Build.mk ../../reboot.py"
+MAKEFILES="../../mono_default_main.cpp ../../mono.mk ../../Build.mk ../../reboot.py ../../probe_serial.py"
 MAKEFILES_WIN="$MAKEFILES reset.exe"
 
 MONOPROG_GIT_URL="https://github.com/getopenmono/monoprog.git"
