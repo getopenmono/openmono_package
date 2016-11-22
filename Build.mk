@@ -6,8 +6,8 @@ EE_ROW_SIZE=16
 CYPRESS_DIR=$(INCLUDE_DIR)
 LINKER_SCRIPT=$(INCLUDE_DIR)/cm3gcc.ld
 ifeq ($(OS),Windows_NT)
-	RM = cmd //C del //Q //F
-	RRM = cmd //C rmdir //Q //S
+	RM = cmd //C $(MONO_PATH)/delete_file_silent.bat
+	RRM = cmd //C $(MONO_PATH)/delete_dir_silent.bat
 else
 	RM = rm -f
 	RRM = rm -f -r
