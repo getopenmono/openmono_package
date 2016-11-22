@@ -6,6 +6,7 @@
 *.vcxproj*
 gcc-arm-none-eabi-*
 package/macos/dist
+package/macos/*.tgz
 package/win/dist
 *.pkg
 .AppleDouble
