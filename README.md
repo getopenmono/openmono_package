@@ -1,5 +1,7 @@
 # Mono Tool chain Installers
 
+[![Travis Build Status](https://travis-ci.org/getopenmono/openmono_package.svg?branch=master "Travis Build Status")](https://travis-ci.org/getopenmono/openmono_package) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/getopenmono/openmono_package?branch=master&svg=true "AppVeyor Build Status")](https://ci.appveyor.com/project/stoffera/openmono-package)
+
 This repository contains the build tools for the tool chain installer packages. We have installers for:
 
 * Windows (64 bit / 32 bit)
