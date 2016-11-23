@@ -2,7 +2,7 @@ source ../configuration.sh
 source ../common.sh
 
 WIN_CERT="Monolit ApS.p12"
-ARCH=64
+ARCH=86
 PACKAGE_NAME=OpenMono-v$VERSION.exe
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=../../$FRAMEWORK_DIR
@@ -69,8 +69,8 @@ makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXEC
 sed -i.bak "s#set VERSION=.*#set VERSION=$VERSION#g" ./build-nsis.bat
 ./build-nsis.bat
 
-if [[ $1 != "-ci" || -f "Monolit ApS.p12" ]]; then
-	./sign.ps1 "Monolit ApS.p12" "OpenMonoSetup-v$VERSION.exe"
+if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
+	./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
 fi
 
 if [[ $1 != "-ci" ]]; then

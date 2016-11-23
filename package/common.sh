@@ -11,7 +11,7 @@ function confirmBuild {
 function downloadGcc {
 	FILE=$(basename $1)
 	
-	if ! [[ -f $FILE || -f $GCC_ARM_DIR_NAME ]]; then
+	if [[ ! -f $FILE && ! -d $GCC_ARM_DIR_NAME ]]; then
 		echo "Downloading GCC Embedded Arm..."
 		curl -O -L $1
 	else
