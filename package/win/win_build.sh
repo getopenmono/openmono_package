@@ -23,7 +23,7 @@ function checkExists {
 	fi
 }
 
-if ! [ -f "./$WIN_CERT" ]; then
+if [[ $1 != "-ci" && ! -f "./$WIN_CERT" ]]; then
 	echo "Build cannot finish, the app certificate ($WIN_CERT) cannot be found!"
 	read -p "Do you want to continue? (y/n)" -n 1 -r
 	echo
@@ -33,7 +33,9 @@ if ! [ -f "./$WIN_CERT" ]; then
     fi
 fi
 
-confirmBuild
+if [[ $1 != "-ci" ]]; then
+	confirmBuild
+fi
 
 checkExists git
 
@@ -43,9 +45,13 @@ buildMonoFramework
 
 cloneMonoProg
 compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
-#downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X64_REDIST_URL
-#downloadGcc $GCC_ARM_WIN_URL
-#thinGcc $WIN_GCC_ARM_DIR_NAME
+
+if [[ $1 == "-ci" || ! -f "$WIN_GCC_ARM_DIR_NAME" ]]; then
+	downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X64_REDIST_URL
+	downloadGcc $GCC_ARM_WIN_URL
+	thinGcc $WIN_GCC_ARM_DIR_NAME
+fi
+
 copyGcc $WIN_GCC_ARM_DIR_NAME $DIST_DEST_DIR
 #rm $DIST_DEST_DIR/bin/monomake
 copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
@@ -58,11 +64,16 @@ makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXEC
 #symbolicLink bin/monomake monomake
 sed -i.bak "s#set VERSION=.*#set VERSION=$VERSION#g" ./build-nsis.bat
 ./build-nsis.bat
-./sign.ps1 "Monolit ApS.p12" "OpenMonoSetup-v$VERSION.exe"
 
-read -p "Should I delete app. cert private key file? ($WIN_CERT) (y/n)" -n 1 -r
-echo
-if [[ $REPLY =~ ^[yY]$ ]]; then
-    echo "Deleting $WIN_CERT..."
-    rm "./$WIN_CERT"
+if [[ $1 != "-ci" || -f "Monolit ApS.p12" ]]; then
+	./sign.ps1 "Monolit ApS.p12" "OpenMonoSetup-v$VERSION.exe"
+fi
+
+if [[ $1 != "-ci" ]]; then
+	read -p "Should I delete app. cert private key file? ($WIN_CERT) (y/n)" -n 1 -r
+	echo
+	if [[ $REPLY =~ ^[yY]$ ]]; then
+	    echo "Deleting $WIN_CERT..."
+	    rm "./$WIN_CERT"
+	fi
 fi
