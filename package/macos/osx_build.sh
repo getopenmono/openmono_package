@@ -24,7 +24,9 @@ function symbolicLink {
     ln -s "../openmono/$1" "$DISTDIR/usr/local/bin/$2"
 }
 
-confirmBuild
+if [[ $1 != "-ci" ]]; then
+	confirmBuild
+fi
 
 # if [ -e "$DISTDIR" ]; then
 #     rm -rf "$DISTDIR"
@@ -38,7 +40,7 @@ cloneMonoProg
 compileMonoprog "$MONOPROG_NAME/$MONOPROG_MAC_EXECUTABLE" $DIST_DEST_DIR/monoprog/.
 
 # # downloadGcc $GCC_ARM_MAC_URL
-# # thinGcc $GCC_ARM_DIR_NAME
+thinGcc $GCC_ARM_DIR_NAME
 copyGcc $GCC_ARM_DIR_NAME $DIST_DEST_DIR
 
 copyFiles "binaries" $BINDIR $DIST_DEST_DIR

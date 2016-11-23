@@ -1,0 +1,32 @@
+language: cpp
+sudo: required
+os:
+    - linux
+    - osx
+services: docker
+addons:
+  apt:
+    packages: libc6-i386
+cache:
+  directories:
+    - $HOME/gcc-arm-none-eabi-5_2-2015q4
+compiler:
+  - gcc
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -qq qt5-default qttools5-dev-tools devscripts libusb-1.0-0-dev libudev-dev libqt5serialport5-dev; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5; fi
+  - qmake -version
+install:
+  - export GCC_DIR=$HOME/gcc-arm-none-eabi-5_2-2015q4
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export GCC_ARCHIVE=$HOME/gcc-arm-none-eabi-5_2-2015q4-20151219-linux.tar.bz2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export GCC_URL=https://launchpad.net/gcc-arm-embedded/5.0/5-2015-q4-major/+download/gcc-arm-none-eabi-5_2-2015q4-20151219-linux.tar.bz2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export GCC_ARCHIVE=$HOME/gcc-arm-none-eabi-5_2-2015q4-20151219-mac.tar.bz2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export GCC_URL=https://launchpad.net/gcc-arm-embedded/5.0/5-2015-q4-major/+download/gcc-arm-none-eabi-5_2-2015q4-20151219-mac.tar.bz2; fi
+  - if [ ! -e $GCC_DIR/bin/arm-none-eabi-g++ ]; then wget $GCC_URL -O $GCC_ARCHIVE; tar xfj $GCC_ARCHIVE -C $HOME; fi
+  - export PATH=$PATH:$GCC_DIR/bin
+script:
+  - echo Building on $TRAVIS_OS_NAME...
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd package/debian; bash build.sh -ci; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd package/macos; bash osx_build.sh -ci; fi
