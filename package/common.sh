@@ -17,13 +17,20 @@ function downloadGcc {
 	fi
 	
 	if [ ! -d $GCC_ARM_DIR_NAME ]; then
-		echo "Extracting GCC..."
-		tar -xjf $FILE
+		extension="${FILE##*.}"
+		echo "Extracting GCC... ($extension)"
+		
+		if [[ $extension == "zip" ]]; then
+			unzip -qn $FILE -d $GCC_ARM_DIR_NAME
+		else
+			tar -xjf $FILE
+		fi
+		
 	fi
 	
 	if [ ! -d $GCC_ARM_DIR_NAME ]; then
 		echo "Error: extracted directory is not named $GCC_ARM_DIR_NAME"
-		return 1
+		exit 1
 	fi
 	echo "GCC downloaded and extracted"
 }
