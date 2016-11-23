@@ -62,9 +62,9 @@ copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR/.
-MAKE_PATH=`which make`
-echo "Copying make from: $MAKE_PATH"
-cp "$MAKE_PATH" "$DIST_DEST_DIR/bin/."
+#MAKE_PATH=`which make`
+#echo "Copying make from: $MAKE_PATH"
+#cp "$MAKE_PATH" "$DIST_DEST_DIR/bin/."
 
 writePSConfigurationFile $DIST_DEST_DIR/configuration.ps1 $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
 makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
