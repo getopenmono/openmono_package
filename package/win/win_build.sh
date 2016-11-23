@@ -1,7 +1,7 @@
 source ../configuration.sh
 source ../common.sh
 
-WIN_CERT="Monolit ApS.p12"
+WIN_CERT="monolit-cert.p12"
 ARCH=86
 PACKAGE_NAME=OpenMono-v$VERSION.exe
 BINDIR=../../$BINDIR
@@ -75,6 +75,7 @@ echo "Creating ZIP archive..."
 zip -r "OpenMonoSDK-v$VERSION.zip" $DIST_DEST_DIR
 
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
+	echo "Signing executable..."
 	./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
 fi
 
@@ -85,6 +86,9 @@ if [[ $1 != "-ci" ]]; then
 	    echo "Deleting $WIN_CERT..."
 	    rm "./$WIN_CERT"
 	fi
+elif [[ $1 == "-ci" && -f "$WIN_CERT" ]]; then
+	echo "Deleting certificate!"
+	rm -f "./$WIN_CERT"
 fi
 
 echo "All is done!"
