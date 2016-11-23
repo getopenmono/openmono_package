@@ -167,12 +167,23 @@ function compileMonoprogWin {
 	cd $MONOPROG_NAME
 	./configuration.bat
 	qmake -tp vc monoprog.pro
+	if ! [ $? ]; then
+		exit 1
+	fi
 	MSBuild.exe monoprog.vcxproj //p:Configuration=Release //p:Platform=x64
+	if ! [ $? ]; then
+		exit 1
+	fi
+	
 	cd $CUR_DIR
 	echo "Copying to monoprog dist..."
 	mkdir -p $2
 	cp -r $1 $2
 	windeployqt.exe $2/monoprog.exe --release --no-translations --dir $2
+	
+	if ! [ $? ]; then
+		exit 1
+	fi
 }
 
 function writeConfigurationFile {

@@ -40,7 +40,7 @@ fi
 checkExists git
 
 if [[ $1 == "-ci" || ! -f "$WIN_GCC_ARM_DIR_NAME" ]]; then
-	downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X64_REDIST_URL
+	downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X86_REDIST_URL
 	downloadGcc $GCC_ARM_WIN_URL
 	thinGcc $WIN_GCC_ARM_DIR_NAME
 fi
