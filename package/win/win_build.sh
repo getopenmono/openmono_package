@@ -62,6 +62,9 @@ copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR/.
+MAKE_PATH=`which make`
+echo "Copying make from: $MAKE_PATH"
+cp "$MAKE_PATH" "$DIST_DEST_DIR/bin/."
 
 writePSConfigurationFile $DIST_DEST_DIR/configuration.ps1 $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
 makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
@@ -69,7 +72,8 @@ makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXEC
 sed -i.bak "s#set VERSION=.*#set VERSION=$VERSION#g" ./build-nsis.bat
 ./build-nsis.bat
 echo "Creating ZIP archive..."
-zip "OpenMonoSDK-v$VERSION.zip" $DIST_DEST_DIR
+zip -r "OpenMonoSDK-v$VERSION.zip" $DIST_DEST_DIR
+
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
 	./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
 fi
