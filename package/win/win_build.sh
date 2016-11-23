@@ -68,7 +68,8 @@ makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXEC
 #symbolicLink bin/monomake monomake
 sed -i.bak "s#set VERSION=.*#set VERSION=$VERSION#g" ./build-nsis.bat
 ./build-nsis.bat
-
+echo "Creating ZIP archive..."
+zip "OpenMonoSDK-v$VERSION.zip" $DIST_DEST_DIR
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
 	./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
 fi
@@ -81,3 +82,5 @@ if [[ $1 != "-ci" ]]; then
 	    rm "./$WIN_CERT"
 	fi
 fi
+
+echo "All is done!"

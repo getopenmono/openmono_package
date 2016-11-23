@@ -173,7 +173,7 @@ function compileMonoprogWin {
 	if ! [ $? ]; then
 		exit 1
 	fi
-	MSBuild.exe monoprog.vcxproj //p:Configuration=Release //p:Platform=x64
+	MSBuild.exe monoprog.vcxproj //p:Configuration=Release //p:Platform=x$ARCH
 	if ! [ $? ]; then
 		exit 1
 	fi
