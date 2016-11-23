@@ -39,13 +39,6 @@ fi
 
 checkExists git
 
-cloneMonoFramework
-modifyMakefile $MONOFRMWRK_NAME $GCC_PATH
-buildMonoFramework
-
-cloneMonoProg
-compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
-
 if [[ $1 == "-ci" || ! -f "$WIN_GCC_ARM_DIR_NAME" ]]; then
 	downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X64_REDIST_URL
 	downloadGcc $GCC_ARM_WIN_URL
@@ -53,6 +46,17 @@ if [[ $1 == "-ci" || ! -f "$WIN_GCC_ARM_DIR_NAME" ]]; then
 fi
 
 copyGcc $WIN_GCC_ARM_DIR_NAME $DIST_DEST_DIR
+
+cloneMonoFramework
+modifyMakefile $MONOFRMWRK_NAME $GCC_PATH
+if [[ ! -f $MONOFRMWRK_NAME/build ]]; then
+	mkdir -p $MONOFRMWRK_NAME/build
+fi
+buildMonoFramework
+
+cloneMonoProg
+compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
+
 #rm $DIST_DEST_DIR/bin/monomake
 copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
