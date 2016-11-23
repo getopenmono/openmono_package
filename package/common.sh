@@ -11,9 +11,11 @@ function confirmBuild {
 function downloadGcc {
 	FILE=$(basename $1)
 	
-	if [ ! -f $FILE ]; then
+	if ! [[ -f $FILE || -f $GCC_ARM_DIR_NAME ]]; then
 		echo "Downloading GCC Embedded Arm..."
 		curl -O -L $1
+	else
+		echo "Skipping GCC download"
 	fi
 	
 	if [ ! -d $GCC_ARM_DIR_NAME ]; then
@@ -25,7 +27,8 @@ function downloadGcc {
 		else
 			tar -xjf $FILE
 		fi
-		
+	else
+		echo "GCC is already extracted"
 	fi
 	
 	if [ ! -d $GCC_ARM_DIR_NAME ]; then
