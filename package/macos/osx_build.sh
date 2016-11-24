@@ -33,7 +33,11 @@ fi
 # fi
 # checkExists git
 cloneMonoFramework
-modifyMakefile $MONOFRMWRK_NAME
+if [[ $1 == "-ci" ]]; then
+	modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+else
+	modifyMakefile $MONOFRMWRK_NAME
+fi
 buildMonoFramework
 
 cloneMonoProg
