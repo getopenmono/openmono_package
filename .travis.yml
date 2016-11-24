@@ -12,7 +12,7 @@ addons:
     packages: libc6-i386
 cache:
   directories:
-    - $HOME/gcc-arm-none-eabi-5_2-2015q4
+    - gcc-arm-none-eabi-5_2-2015q4
 compiler:
   - gcc
 before_install:
@@ -26,9 +26,9 @@ install:
   - export GCC_DIR=$HOME/gcc-arm-none-eabi-5_2-2015q4
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export GCC_ARCHIVE=$HOME/gcc-arm-none-eabi-5_2-2015q4-20151219-linux.tar.bz2; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export GCC_URL=https://launchpad.net/gcc-arm-embedded/5.0/5-2015-q4-major/+download/gcc-arm-none-eabi-5_2-2015q4-20151219-linux.tar.bz2; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export GCC_ARCHIVE=$HOME/gcc-arm-none-eabi-5_2-2015q4-20151219-mac.tar.bz2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export GCC_ARCHIVE=gcc-arm-none-eabi-5_2-2015q4-20151219-mac.tar.bz2; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export GCC_URL=https://launchpad.net/gcc-arm-embedded/5.0/5-2015-q4-major/+download/gcc-arm-none-eabi-5_2-2015q4-20151219-mac.tar.bz2; fi
-  - if [ ! -e $GCC_DIR/bin/arm-none-eabi-g++ ]; then wget $GCC_URL -O $GCC_ARCHIVE; tar xfj $GCC_ARCHIVE -C $HOME; fi
+  - if [ ! -e $GCC_DIR/bin/arm-none-eabi-g++ ]; then wget $GCC_URL -O $GCC_ARCHIVE; tar xfvj $GCC_ARCHIVE; fi
   - export PATH=$PATH:$GCC_DIR/bin
 script:
   - echo Building on $TRAVIS_OS_NAME...
