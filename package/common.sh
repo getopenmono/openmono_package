@@ -164,6 +164,22 @@ function compileMonoprog {
 	cp -r $1 $2
 }
 
+function compileMonoprogMac {
+	echo "Compiling monoprog (macOS)..."
+	CUR_DIR=`pwd`
+	cd $MONOPROG_NAME
+	qmake monoprog.pro
+	make
+	if [[ ! $? ]]; then
+		echo "Failed to compile monoprog!"
+		exit 1
+	fi
+	cd $CUR_DIR
+	echo "Copying to monoprog dist... ($1 --> $2)"
+	mkdir -p $2
+	cp -r $1 $2 
+}
+
 function compileMonoprogWin {
 	echo "Compiling monoprog..."
 	CUR_DIR=`pwd`

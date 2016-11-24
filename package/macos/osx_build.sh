@@ -31,7 +31,8 @@ fi
 # if [ -e "$DISTDIR" ]; then
 #     rm -rf "$DISTDIR"
 # fi
-# checkExists git
+# checkExists git'
+
 cloneMonoFramework
 if [[ $1 == "-ci" ]]; then
 	modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
@@ -41,7 +42,7 @@ fi
 buildMonoFramework
 
 cloneMonoProg
-compileMonoprog "$MONOPROG_NAME/$MONOPROG_MAC_EXECUTABLE" $DIST_DEST_DIR/monoprog/.
+compileMonoprogMac "$MONOPROG_NAME/$MONOPROG_MAC_EXECUTABLE" $DIST_DEST_DIR/monoprog/.
 
 # # downloadGcc $GCC_ARM_MAC_URL
 thinGcc $GCC_ARM_DIR_NAME
