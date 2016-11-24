@@ -10,6 +10,12 @@ TEMPLATE_DIR=../../$TEMPLATE_DIR
 DISTDIR=dist
 DIST_DEST_DIR="$DISTDIR/usr/local/openmono"
 
+if [[ $1 == "-ci" ]]; then
+	echo "Running on CI env. Setting GCC_ARM_DIR_NAME to:"
+	GCC_ARM_DIR_NAME=$HOME/$GCC_ARM_DIR_NAME
+	echo $GCC_ARM_DIR_NAME
+fi
+
 get_abs_filename() {
 	# $1 : relative filename
 	if [ -d "$(dirname "$1")" ]; then
