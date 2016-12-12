@@ -24,7 +24,7 @@ ${If} $0 != "admin" ;Require admin rights on NT4+
 ${EndIf}
 FunctionEnd
 
-!define MUI_ICON "windows.ico"
+!define MUI_ICON "install_icon.ico"
 !define MUI_UNICON "windowsUninstall.ico"
 !define MUI_BGCOLOR "ecf0f1"
 
@@ -47,7 +47,7 @@ Section "Install" SecInstall
 	ExecWait '"$INSTDIR\${MSVS_FILE}"  /passive /norestart'	
 
 	File /r "dist\*"
-	File "windows.ico"
+	File "install_icon.ico"
 	File "USBUART_cdc.inf"
 	File "USBUART_cdc.cat"
 
@@ -59,7 +59,7 @@ Section "Install" SecInstall
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
 				 "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
-				 "DisplayIcon" "$\"$INSTDIR\windows.ico$\""
+				 "DisplayIcon" "$\"$INSTDIR\install_icon.ico$\""
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
 				 "Publisher" "OpenMono (Monolit ApS)"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
