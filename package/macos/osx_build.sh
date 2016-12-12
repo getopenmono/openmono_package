@@ -32,12 +32,36 @@ function symbolicLink {
 
 if [[ $1 != "-ci" ]]; then
 	confirmBuild
+else
+	echo "Auto building v $VERSION"
 fi
 
 # if [ -e "$DISTDIR" ]; then
 #     rm -rf "$DISTDIR"
 # fi
 # checkExists git'
+
+buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd`
+mkdir -p $LITTLE_HELPER_DISTDIR
+echo "Unzipping Monomake-UI for Package installer..."
+unzip $(basename $LITTLE_HELPER_MAC_ARTIFACT) -d $LITTLE_HELPER_DISTDIR
+mkdir -p $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
+mv $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_MAC_EXE $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR/Monomake.app
+
+# Download GCC
+if [[ $1 != "-ci" && ! -e $GCC_ARM_DIR_NAME ]]; then
+	GCC_DIR=$GCC_ARM_DIR_NAME
+	GCC_ARCHIVE=$MAC_GCC_ARM_DIR_NAME
+	GCC_URL=$GCC_ARM_MAC_URL
+	if [[ ! -f $MAC_GCC_ARM_DIR_NAME ]]; then
+		echo "GCC Arm does not exists, downloading..."
+		wget $GCC_URL -O $GCC_ARCHIVE;
+	else
+		echo "GCC folder does not exists, but archive does"
+	fi
+	echo "Extracting GCC to $GCC_ARM_DIR_NAME..."
+	tar xfj $GCC_ARCHIVE
+fi
 
 cloneMonoFramework
 if [[ $1 == "-ci" ]]; then
@@ -76,7 +100,7 @@ if ! hash pkgbuild 2>/dev/null; then
 fi
 
 echo "Building package..."
-if [[ $1 != "-ci" ]]; then
+if [[ $1 != "-ci" && $1 != "--no-sign" ]]; then
     pkgbuild \
         --root "$DISTDIR" \
         --component-plist component.plist \

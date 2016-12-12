@@ -8,6 +8,37 @@ function confirmBuild {
     fi
 }
 
+function buildLittleHelper {
+	if ! hash npm; then
+		echo "NodeJs NPM not found in path!"
+	fi
+	
+	echo "Copy result: $1 --> $2"
+	
+	if [[ -d "little-helper/.git" ]]; then
+		echo "Resetting source repo and pulling Git changes..."
+		cd "little-helper"
+		git checkout -- .
+		git pull
+		cd ..
+	else
+		git clone $LITTLE_HELPER_GIT "little-helper"
+	fi
+	
+	echo "Building little helper..."
+	cd little-helper && \
+	echo "Setting version to $VERSION..." && node ../../replaceVersion.js "package.json" "$VERSION" && \
+	npm install && \
+	npm run dist && cp $1 $2 && cp build/elf.ico $2 && cd ..
+	
+	SUCCESS=$?
+	
+	if ! [ $SUCCESS ]; then
+		echo "failed to build little helper!"
+		exit 1
+	fi
+}
+
 function downloadGcc {
 	FILE=$(basename $1)
 	
@@ -54,7 +85,7 @@ function copyGcc {
 
 function cloneMonoProg {
 	if [ ! -d $MONOPROG_NAME ]; then
-		echo "Cloing monoprog from GitHub..."
+		echo "Cloning monoprog from GitHub..."
 		git clone $MONOPROG_GIT_URL
 	else
 		echo "Pulling monoprog changes from GitHub..."
@@ -68,7 +99,7 @@ function cloneMonoProg {
 
 function cloneMonoFramework {
 	if [ ! -d $MONOFRMWRK_NAME ]; then
-		echo "Cloing mono framework from GitHub..."
+		echo "Cloning mono framework from GitHub..."
 		git clone $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME
 	else
 		echo "Pulling mono framework changes from GitHub..."

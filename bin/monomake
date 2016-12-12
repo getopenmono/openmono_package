@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-VERSION="1.4"
+VERSION="1.5"
 APPNAME="monomake"
 MONO_PATH=$(dirname $(dirname `which $APPNAME`))
 if [ -d $MONO_PATH/openmono ]; then
@@ -136,7 +136,7 @@ function probeBootloader {
 }
 
 function monoprog {
-	$MONOPROG_DIR/monoprog $1 $2 $3 $4
+	$MONOPROG_DIR/monoprog $1 "$2" "$3" "$4"
 }
 
 function printVersion {
@@ -164,7 +164,7 @@ elif [ $1 == "project" ]; then
 elif [ $1 == "reboot" ]; then
     rebootMonoDtr
 elif [ $1 == "monoprog" ]; then
-    monoprog $2 $3 $4 $5
+    monoprog "$2" "$3" "$4" "$5"
 elif [ $1 == "version" ]; then
     printVersion $2
 elif [ $1 == "path" ]; then
