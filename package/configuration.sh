@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=1.4.3
+VERSION=1.5.0
 BINDIR='bin'
 FRAMEWORK_DIR='mono'
 TEMPLATE_DIR='template'
