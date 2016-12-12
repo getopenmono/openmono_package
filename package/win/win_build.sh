@@ -76,7 +76,7 @@ zip -r "OpenMonoSDK-v$VERSION.zip" $DIST_DEST_DIR
 
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
 	echo "Signing executable..."
-	./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
+	powershell.exe -File ./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
 fi
 
 if [[ $1 != "-ci" ]]; then
