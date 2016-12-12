@@ -137,6 +137,8 @@ function buildPsoc5Library {
 function buildMonoFramework {
 	echo "Compiling mono framework..."
 	cd $MONOFRMWRK_NAME
+	COMMIT=`git show --oneline -s`
+	echo "Building commit: $COMMIT"
 	make clean
 	SUCCESS=$?
     if [ ! $SUCCESS ]; then
@@ -157,6 +159,8 @@ function compileMonoprog {
 	echo "Compiling monoprog..."
 	CUR_DIR=`pwd`
 	cd $MONOPROG_NAME
+	COMMIT=`git show --oneline -s`
+	echo "Building commit: $COMMIT"
 	./compile.sh
 	cd $CUR_DIR
 	echo "Copying to monoprog dist... ($1 --> $2)"
@@ -168,6 +172,8 @@ function compileMonoprogMac {
 	echo "Compiling monoprog (macOS)..."
 	CUR_DIR=`pwd`
 	cd $MONOPROG_NAME
+	COMMIT=`git show --oneline -s`
+	echo "Building commit: $COMMIT"
 	qmake monoprog.pro
 	make
 	if [[ ! $? ]]; then
@@ -184,6 +190,8 @@ function compileMonoprogWin {
 	echo "Compiling monoprog..."
 	CUR_DIR=`pwd`
 	cd $MONOPROG_NAME
+	COMMIT=`git show --oneline -s`
+	echo "Building commit: $COMMIT"
 	./configuration.bat
 	qmake -tp vc monoprog.pro
 	if ! [ $? ]; then
