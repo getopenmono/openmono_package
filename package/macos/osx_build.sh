@@ -41,9 +41,9 @@ fi
 
 cloneMonoFramework
 if [[ $1 == "-ci" ]]; then
-	modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+    modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
 else
-	modifyMakefile $MONOFRMWRK_NAME
+    modifyMakefile $MONOFRMWRK_NAME
 fi
 buildMonoFramework
 
@@ -76,14 +76,27 @@ if ! hash pkgbuild 2>/dev/null; then
 fi
 
 echo "Building package..."
-pkgbuild \
-    --root "$DISTDIR" \
-    --component-plist component.plist \
-    --identifier com.openmono.monoframework \
-    --version $VERSION \
-    --install-location / \
-    --scripts scripts \
-    "$PACKAGE_NAME.pkg"
+if [[ $1 != "-ci" ]]; then
+    pkgbuild \
+        --root "$DISTDIR" \
+        --component-plist component.plist \
+        --identifier com.openmono.monoframework \
+        --version $VERSION \
+        --install-location / \
+        --scripts scripts \
+        --sign "Developer ID Installer: Monolit ApS (MUXP6TEH5D)" \
+        "$PACKAGE_NAME.pkg"
+else
+    echo "(Unsigned)"
+    pkgbuild \
+        --root "$DISTDIR" \
+        --component-plist component.plist \
+        --identifier com.openmono.monoframework \
+        --version $VERSION \
+        --install-location / \
+        --scripts scripts \
+        "$PACKAGE_NAME.pkg"
+fi
 
 echo "Creating TGZ Mac package for those who hate PKG installers..."
 tar -czf "$PACKAGE_NAME.tgz" -C "`dirname $DIST_DEST_DIR`" "`basename $DIST_DEST_DIR`"
