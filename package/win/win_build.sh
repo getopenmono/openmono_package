@@ -62,7 +62,7 @@ copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR/.
-
+ 
 # Build little helper
 buildLittleHelper $LITTLE_HELPER_WIN_ARTIFACT `pwd`
 mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
