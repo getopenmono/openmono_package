@@ -8,6 +8,34 @@ function confirmBuild {
     fi
 }
 
+function buildLittleHelper {
+	if ! hash npm; then
+		echo "NodeJs NPM not found in path!"
+	fi
+	
+	if [[ -e "little-helper" ]]; then
+		echo "Resetting source repo and pulling Git changes..."
+		cd "little-helper"
+		git checkout -- .
+		git pull
+		cd ..
+	else
+		git clone $LITTLE_HELPER_GIT "little-helper"
+	fi
+	
+	echo "Building little helper..."
+	cd little-helper && 
+	node ../../replaceVersion.js "package.json" "$VERSION" \
+	npm install && \
+	npm run dist && cp $1 $2
+	
+	SUCCESS=$?
+	
+	if ! [ $SUCCESS ]; then
+		echo "failed to build little helper!"
+	fi
+}
+
 function downloadGcc {
 	FILE=$(basename $1)
 	
