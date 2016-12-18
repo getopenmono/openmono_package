@@ -43,7 +43,9 @@ checkExists git
 buildLittleHelper $LITTLE_HELPER_WIN_ARTIFACT `pwd`
 mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
 echo "Unzipping Monomake-UI for NSIS installer..."
-unzip $(basename $LITTLE_HELPER_WIN_ARTIFACT) "win-ia32-unpacked/*" -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
+unzip $(basename $LITTLE_HELPER_WIN_ARTIFACT) -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
+mv "$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/win-ia32-unpacked/*" "$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/."
+ls -l $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
 
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
 	if [[ -f $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE ]]; then
