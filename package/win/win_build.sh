@@ -40,7 +40,7 @@ fi
 checkExists git
 
 # Build little helper
-buildLittleHelper `pwd`/$LITTLE_HELPER_WIN_ARTIFACT `pwd`
+buildLittleHelper $LITTLE_HELPER_WIN_ARTIFACT `pwd`
 mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
 echo "Unzipping Monomake-UI for NSIS installer..."
 unzip $LITTLE_HELPER_WIN_ARTIFACT -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
