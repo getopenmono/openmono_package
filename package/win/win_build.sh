@@ -64,14 +64,17 @@ copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR/.
  
 # Build little helper
-buildLittleHelper $LITTLE_HELPER_WIN_ARTIFACT `pwd`
+buildLittleHelper `pwd`/$LITTLE_HELPER_WIN_ARTIFACT `pwd`
 mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
+echo "Unzipping Monomake-UI for NSIS installer..."
 unzip $LITTLE_HELPER_WIN_ARTIFACT -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
 
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
 	if [[ -f $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE ]]; then
 		echo "Signing Monomake UI..."
 		./sign.ps1 "$WIN_CERT" "$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
+	else
+		echo "Could not find Exe file to sign:\n$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
 	fi
 fi
 
