@@ -65,17 +65,17 @@ cp $MAKEFILES_WIN $DIST_DEST_DIR/.
 
 # Build little helper
 buildLittleHelper $LITTLE_HELPER_WIN_ARTIFACT `pwd`
-mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
+mkdir -p $LITTLE_HELPER_DISTDIR
 echo "Unzipping Monomake-UI for NSIS installer..."
-unzip $(basename $LITTLE_HELPER_WIN_ARTIFACT) -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
-mv $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/win-ia32-unpacked/* $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/.
+unzip $(basename $LITTLE_HELPER_WIN_ARTIFACT) -d $LITTLE_HELPER_DISTDIR
+mv $LITTLE_HELPER_DISTDIR/win-ia32-unpacked/* $LITTLE_HELPER_DISTDIR/.
 
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
-	if [[ -f $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE ]]; then
+	if [[ -f $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE ]]; then
 		echo "Signing Monomake UI..."
-		powershell.exe -File ./sign.ps1 "$WIN_CERT" "$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
+		powershell.exe -File ./sign.ps1 "$WIN_CERT" "$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
 	else
-		echo "Could not find Exe file to sign:\n$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
+		echo "Could not find Exe file to sign: $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
 	fi
 fi
 
