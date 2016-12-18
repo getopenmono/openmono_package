@@ -39,6 +39,23 @@ fi
 
 checkExists git
 
+# Build little helper
+buildLittleHelper `pwd`/$LITTLE_HELPER_WIN_ARTIFACT `pwd`
+mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
+echo "Unzipping Monomake-UI for NSIS installer..."
+unzip $LITTLE_HELPER_WIN_ARTIFACT -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
+
+if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
+	if [[ -f $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE ]]; then
+		echo "Signing Monomake UI..."
+		./sign.ps1 "$WIN_CERT" "$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
+	else
+		echo "Could not find Exe file to sign:\n$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
+	fi
+fi
+
+exit 0
+
 if [[ $1 == "-ci" || ! -f "$WIN_GCC_ARM_DIR_NAME" ]]; then
 	downloadUrl "VC2013 C++ Redistributable" $WIN_VC2013_X86_REDIST_URL
 	downloadGcc $GCC_ARM_WIN_URL
@@ -63,20 +80,6 @@ copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR/.
  
-# Build little helper
-buildLittleHelper `pwd`/$LITTLE_HELPER_WIN_ARTIFACT `pwd`
-mkdir -p $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
-echo "Unzipping Monomake-UI for NSIS installer..."
-unzip $LITTLE_HELPER_WIN_ARTIFACT -d $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR
-
-if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
-	if [[ -f $DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE ]]; then
-		echo "Signing Monomake UI..."
-		./sign.ps1 "$WIN_CERT" "$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
-	else
-		echo "Could not find Exe file to sign:\n$DIST_DEST_DIR/$LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_WIN_EXE"
-	fi
-fi
 
 #MAKE_PATH=`which make`
 #echo "Copying make from: $MAKE_PATH"

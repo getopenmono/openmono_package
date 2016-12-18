@@ -13,6 +13,8 @@ function buildLittleHelper {
 		echo "NodeJs NPM not found in path!"
 	fi
 	
+	echo "Copy result: $1 --> $2"
+	
 	if [[ -e "little-helper" ]]; then
 		echo "Resetting source repo and pulling Git changes..."
 		cd "little-helper"
@@ -27,7 +29,7 @@ function buildLittleHelper {
 	cd little-helper &&
 	node ../../replaceVersion.js "package.json" "$VERSION" && \
 	npm install && \
-	npm run dist && cp $1 $2 && cd ..
+	npm run dist && ls -l && ls -l dist && cp $1 $2 && cd ..
 	
 	SUCCESS=$?
 	
