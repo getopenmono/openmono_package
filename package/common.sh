@@ -25,7 +25,7 @@ function buildLittleHelper {
 	
 	echo "Building little helper..."
 	cd little-helper && 
-	node ../../replaceVersion.js "package.json" "$VERSION" \
+	node ../../replaceVersion.js "package.json" "$VERSION" && \
 	npm install && \
 	npm run dist && cp $1 $2
 	
@@ -33,6 +33,7 @@ function buildLittleHelper {
 	
 	if ! [ $SUCCESS ]; then
 		echo "failed to build little helper!"
+		exit 1
 	fi
 }
 
