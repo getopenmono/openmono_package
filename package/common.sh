@@ -29,7 +29,7 @@ function buildLittleHelper {
 	cd little-helper &&
 	node ../../replaceVersion.js "package.json" "$VERSION" && \
 	npm install && \
-	npm run dist && ls -l && ls -l dist && cp $1 $2 && cd ..
+	npm run dist && cp $1 $2 && cd ..
 	
 	SUCCESS=$?
 	

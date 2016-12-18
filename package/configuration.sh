@@ -31,7 +31,7 @@ MONOPROG_WIN_EXECUTABLE="release/monoprog.exe"
 
 LITTLE_HELPER_DISTDIR="Monomake-UI"
 LITTLE_HELPER_GIT="https://github.com/getopenmono/little-helper.git"
-LITTLE_HELPER_WIN_ARTIFACT="dist/Monomake-UI-$VERSION-win.zip"
+LITTLE_HELPER_WIN_ARTIFACT="dist/Monomake-UI-$VERSION-ia32-win.zip"
 LITTLE_HELPER_WIN_EXE="Monomake-UI.exe"
 LITTLE_HELPER_MAC_ARTIFACT="dist/mac/Monomake-UI-$VERSION-mac.zip"
 
