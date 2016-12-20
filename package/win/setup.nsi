@@ -76,7 +76,7 @@ SectionEnd
 
 Section "Monomake GUI" SecMonomakeUI
 	File /r "Monomake-UI"
-	CreateShortCut  "$SMPROGRAMS\${MUI_NAME}.lnk" "$INSTDIR\${MUI_FILE}" "" "$INSTDIR\${MUI_FILE}" 0
+	CreateShortCut  "$SMPROGRAMS\${MUI_NAME}.lnk" "$INSTDIR\Monomake-UI\${MUI_FILE}" "" "$INSTDIR\${MUI_FILE}" 0
 SectionEnd
 
 Section "ELF File Association" SecFileAssoc
