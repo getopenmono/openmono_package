@@ -1,6 +1,7 @@
 branches:
   only:
   - master
+  - release15
 language: cpp
 sudo: required
 os:

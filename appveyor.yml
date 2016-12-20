@@ -2,7 +2,6 @@ version: 1.4.{build}
 branches:
   only:
   - master
-  - release15
 image: Visual Studio 2013
 platform: x86
 environment:

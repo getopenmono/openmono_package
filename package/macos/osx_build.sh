@@ -39,6 +39,13 @@ fi
 # fi
 # checkExists git'
 
+buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd`
+mkdir -p $LITTLE_HELPER_DISTDIR
+echo "Unzipping Monomake-UI for Package installer..."
+unzip $(basename $LITTLE_HELPER_MAC_ARTIFACT) -d $LITTLE_HELPER_DISTDIR
+mkdir -p $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
+mv $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_MAC_EXE $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR/Monomake.app
+
 cloneMonoFramework
 if [[ $1 == "-ci" ]]; then
     modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
