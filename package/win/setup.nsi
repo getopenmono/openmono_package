@@ -86,14 +86,14 @@ Section "ELF File Association" SecFileAssoc
 	WriteRegStr HKCU "Software\Classes\.elf" "" "OpenMono.Application"
 	WriteRegStr HKCU "Software\Classes\OpenMono.Application" "" "Mono Application"
 	WriteRegStr HKCU "Software\Classes\OpenMono.Application\DefaultIcon" "" "$INSTDIR\elf.ico"
-	WriteRegStr HKCU "Software\Classes\OpenMono.Application\shell\open\command" "" '"$INSTDIR\${MUI_FILE}" "%1"'
+	WriteRegStr HKCU "Software\Classes\OpenMono.Application\shell\open\command" "" '"$INSTDIR\Monomake-UI\${MUI_FILE}" "%1"'
 SectionEnd
 
 Section  "MonoKiosk Integration" SecUrlAssoc
 	; Register openmono URL protocol association
 	WriteRegStr HKCU "Software\Classes\openmono" "" "URL:openmono"
 	WriteRegStr HKCU "Software\Classes\openmono" "URL Protocol" ""
-	WriteRegStr HKCU "Software\Classes\openmono\shell\open\command" "" '"$INSTDIR\${MUI_FILE}" "%1"'
+	WriteRegStr HKCU "Software\Classes\openmono\shell\open\command" "" '"$INSTDIR\Monomake-UI\${MUI_FILE}" "%1"'
 SectionEnd
 
 
