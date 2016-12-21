@@ -24,8 +24,8 @@ cache:
   - package/$TARGET_OS/monoprog
   - package/$TARGET_OS/little-helper
 compiler:
-- gcc
-  before_install:
+  - gcc
+before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -qq qt5-default qttools5-dev-tools devscripts libusb-1.0-0-dev libudev-dev libqt5serialport5-dev; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
@@ -45,8 +45,11 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd package/debian; bash build.sh -ci; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd package/macos; bash osx_build.sh -ci; fi
 notifications:
+  email: false
   slack:
-    secure: YPbjrWKWuGYzhKu2rv6VB0+MbHz/IFMd0F+TKeNkjjxm2GD6+u2Oruld6hxa11YnnnNjDvQRY7BFhWiM2Ib2Dmu3GlrH9qALx65vBKwoKaWBXtZg3dL3xSGdHzmVs9coDg2yummsx8c8ka++xv3nw73nsUn2jIZxoZt0Q2ZUABrk061yqdG763xykgAM29X7kUhhX3IAE4teT6y0NxuLjk4QwM/pqmpO7qego+hVWUttsbNnevZHkO6CmtGUarJSm2Tjm4LnKWiMyNR8xqK2YcjJE2ldYNEwUZfdXwcBAw+7HIo6dnc/rIsGFILG1mGwKamwodLpdGbeje2YJQlhhsSYR1hUMT2NgjfUfGIK1f/A2GnFrqDwLiluXgl+RlntVS5gMEqFIbQPY+cJ0YIzKj3x37riaS5BMNxTUpQdI0rUiyUqS1iZBb5UyFkDtf8+H+bOHE6tWfY5cmsN0TsQpMBBTisxfhSyUmB/EJk7TTYiomeCrNshmwIdr8EocvMM2hv7myrm+mcekWKYt+cvHhVSz3JMPspWcO+RrNcr3XR1ooz8gE6oX6aiBhX38n3L0D57mYFxfvaSywV7CM2vattuV2CjNwua2qfHfnkq0YN4pfNA675acn/JHpdA4I7fX644fTI1t5iErPNNFMDD6sm5gVVXFymWFoqeu0lRi48=
+    on_success: change
+    rooms:
+      secure: YPbjrWKWuGYzhKu2rv6VB0+MbHz/IFMd0F+TKeNkjjxm2GD6+u2Oruld6hxa11YnnnNjDvQRY7BFhWiM2Ib2Dmu3GlrH9qALx65vBKwoKaWBXtZg3dL3xSGdHzmVs9coDg2yummsx8c8ka++xv3nw73nsUn2jIZxoZt0Q2ZUABrk061yqdG763xykgAM29X7kUhhX3IAE4teT6y0NxuLjk4QwM/pqmpO7qego+hVWUttsbNnevZHkO6CmtGUarJSm2Tjm4LnKWiMyNR8xqK2YcjJE2ldYNEwUZfdXwcBAw+7HIo6dnc/rIsGFILG1mGwKamwodLpdGbeje2YJQlhhsSYR1hUMT2NgjfUfGIK1f/A2GnFrqDwLiluXgl+RlntVS5gMEqFIbQPY+cJ0YIzKj3x37riaS5BMNxTUpQdI0rUiyUqS1iZBb5UyFkDtf8+H+bOHE6tWfY5cmsN0TsQpMBBTisxfhSyUmB/EJk7TTYiomeCrNshmwIdr8EocvMM2hv7myrm+mcekWKYt+cvHhVSz3JMPspWcO+RrNcr3XR1ooz8gE6oX6aiBhX38n3L0D57mYFxfvaSywV7CM2vattuV2CjNwua2qfHfnkq0YN4pfNA675acn/JHpdA4I7fX644fTI1t5iErPNNFMDD6sm5gVVXFymWFoqeu0lRi48=
 # deploy:
 #   provider: bintray
 #   file:
