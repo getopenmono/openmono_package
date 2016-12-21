@@ -32,6 +32,8 @@ function symbolicLink {
 
 if [[ $1 != "-ci" ]]; then
 	confirmBuild
+else
+	echo "Auto building v $VERSION"
 fi
 
 # if [ -e "$DISTDIR" ]; then
@@ -47,7 +49,7 @@ mkdir -p $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
 mv $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_MAC_EXE $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR/Monomake.app
 
 # Download GCC
-if [[ $1 != "-ci" && -e $GCC_ARM_DIR_NAME ]]; then
+if [[ $1 != "-ci" && ! -e $GCC_ARM_DIR_NAME ]]; then
 	GCC_DIR=$GCC_ARM_DIR_NAME
 	GCC_ARCHIVE=$MAC_GCC_ARM_DIR_NAME
 	GCC_URL=$GCC_ARM_MAC_URL

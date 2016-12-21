@@ -15,7 +15,7 @@ function buildLittleHelper {
 	
 	echo "Copy result: $1 --> $2"
 	
-	if [[ -e "little-helper" ]]; then
+	if [[ -d "little-helper/.git" ]]; then
 		echo "Resetting source repo and pulling Git changes..."
 		cd "little-helper"
 		git checkout -- .
@@ -85,7 +85,7 @@ function copyGcc {
 
 function cloneMonoProg {
 	if [ ! -d $MONOPROG_NAME ]; then
-		echo "Cloing monoprog from GitHub..."
+		echo "Cloning monoprog from GitHub..."
 		git clone $MONOPROG_GIT_URL
 	else
 		echo "Pulling monoprog changes from GitHub..."
@@ -99,7 +99,7 @@ function cloneMonoProg {
 
 function cloneMonoFramework {
 	if [ ! -d $MONOFRMWRK_NAME ]; then
-		echo "Cloing mono framework from GitHub..."
+		echo "Cloning mono framework from GitHub..."
 		git clone $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME
 	else
 		echo "Pulling mono framework changes from GitHub..."
