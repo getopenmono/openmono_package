@@ -16,7 +16,7 @@ function symbolicLink {
     ln -s "../lib/openmono/$1" "$PKGROOT/usr/bin/$2"
 }
 
-if [ $1 != "-ci" ]; then
+if [[ $1 != "-ci" ]]; then
 	confirmBuild
 fi
 
@@ -25,7 +25,13 @@ if [[ $1 != "-ci" && -d $PKGROOT ]]; then
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
 
-#checkExists git
+mkdir -p $DIST_DEST_DIR
+buildLittleHelper $LITTLE_HELPER_DEB_ARTIFACT `pwd`/$DIST_DEST_DIR
+POSTSCRIPT="echo \"\n\tOpenMono SDK Installed!\n\tYou can install the GUI client for monomake by running:\n\tsudo dpkg -i /usr/lib/openmono/$(basename $LITTLE_HELPER_DEB_ARTIFACT)\n\""
+echo "Creating Post-install text!"
+mkdir -p "${PKGROOT}/DEBIAN"
+echo $POSTSCRIPT > ${PKGROOT}/DEBIAN/postinst
+chmod 0775 ${PKGROOT}/DEBIAN/postinst
 
 cloneMonoFramework
 modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"

@@ -10,7 +10,10 @@ os:
 services: docker
 addons:
   apt:
-    packages: libc6-i386
+    packages:
+      - libc6-i386
+      - icnsutils
+      - graphicsmagick
 cache:
   directories:
   - "$HOME/gcc-arm-none-eabi-5_2-2015q4"
