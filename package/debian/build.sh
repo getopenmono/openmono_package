@@ -25,6 +25,11 @@ if [[ $1 != "-ci" && -d $PKGROOT ]]; then
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
 
+cloneMonoFramework
+modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+buildMonoFramework
+
+# Build Little Helper
 mkdir -p $DIST_DEST_DIR
 buildLittleHelper $LITTLE_HELPER_DEB_ARTIFACT `pwd`/$DIST_DEST_DIR
 POSTSCRIPT="echo \"\n\tOpenMono SDK Installed!\n\tYou can install the GUI client for monomake by running:\n\tsudo dpkg -i /usr/lib/openmono/$(basename $LITTLE_HELPER_DEB_ARTIFACT)\n\""
@@ -32,10 +37,6 @@ echo "Creating Post-install text!"
 mkdir -p "${PKGROOT}/DEBIAN"
 echo $POSTSCRIPT > ${PKGROOT}/DEBIAN/postinst
 chmod 0775 ${PKGROOT}/DEBIAN/postinst
-
-cloneMonoFramework
-modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
-buildMonoFramework
 
 cloneMonoProg
 compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.

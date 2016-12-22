@@ -13,6 +13,5 @@ CMD export PATH=$PATH:$HOME/gcc-arm-none-eabi-5_2-2015q4/bin && \
   echo "Using branch: $BRANCH and copy to destination volume: $COPY_DEST" && \
   git clone -b $BRANCH https://github.com/getopenmono/openmono_package.git && \
   cd openmono_package/package/debian && \
-  pwd && \
   bash build.sh -ci && \
   cp -r debpackage/*.deb $COPY_DEST
