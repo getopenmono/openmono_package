@@ -26,8 +26,8 @@ function buildLittleHelper {
 	fi
 	
 	echo "Building little helper..."
-	cd little-helper &&
-	node ../../replaceVersion.js "package.json" "$VERSION" && \
+	cd little-helper && \
+	echo "Setting version to $VERSION..." && node ../../replaceVersion.js "package.json" "$VERSION" && \
 	npm install && \
 	npm run dist && cp $1 $2 && cp build/elf.ico $2 && cd ..
 	
