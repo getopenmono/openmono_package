@@ -2,6 +2,7 @@ branches:
   only:
   - master
   - release15
+  - cifixmac
 language: cpp
 sudo: required
 env:
