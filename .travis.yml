@@ -1,7 +1,6 @@
 branches:
   only:
   - master
-  - release15
 language: cpp
 sudo: required
 env:
@@ -10,6 +9,7 @@ matrix:
   include:
     os: osx
     env: TARGET_OS=macos
+    env: QT_VERSION=5.7.1_1
 services: docker
 addons:
   apt:
@@ -29,7 +29,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -qq qt5-default qttools5-dev-tools devscripts libusb-1.0-0-dev libudev-dev libqt5serialport5-dev; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5 && brew linkapps qt5; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install qt5 && export PATH=$PATH:/usr/local/Cellar/qt5/$QT_VERSION/bin; fi
   - qmake -version
 install:
   - export GCC_DIR=$HOME/gcc-arm-none-eabi-5_2-2015q4

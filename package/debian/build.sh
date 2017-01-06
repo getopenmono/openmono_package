@@ -6,6 +6,7 @@ source ../common.sh
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=./mono_framework/dist/$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
+DEB_GCC_DIR=$HOME/$GCC_ARM_DIR_NAME
 
 PACKAGE=openmono
 DISTDIR=debpackage
@@ -38,6 +39,10 @@ mkdir -p "${PKGROOT}/DEBIAN"
 echo $POSTSCRIPT > ${PKGROOT}/DEBIAN/postinst
 chmod 0775 ${PKGROOT}/DEBIAN/postinst
 
+echo "Thinning GCC to prepare package..."
+thinGcc $DEB_GCC_DIR
+copyGcc $DEB_GCC_DIR $DIST_DEST_DIR
+
 cloneMonoProg
 compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.
 mkdir -p $DIST_DEST_DIR
@@ -47,10 +52,12 @@ copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 
 cp $MAKEFILES $DIST_DEST_DIR
 writeConfigurationFile $DIST_DEST_DIR/configuration.sh
-makeConfigurationFile $DIST_DEST_DIR/predefines.mk "monoprog" "" "arm-none-eabi-"
+makeConfigurationFile $DIST_DEST_DIR/predefines.mk "monoprog" ""
 
 mkdir -p $PKGROOT/usr/bin
 symbolicLink bin/monomake monomake
+
+
 
 ##UDEV rules
 echo "Creating udev rules for USB device..."
