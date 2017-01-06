@@ -6,6 +6,7 @@ source ../common.sh
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=./mono_framework/dist/$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
+DEB_GCC_DIR=$HOME/$GCC_ARM_DIR_NAME
 
 PACKAGE=openmono
 DISTDIR=debpackage
@@ -24,6 +25,10 @@ if [[ $1 != "-ci" && -d $PKGROOT ]]; then
     echo "Re-assigning user priviledges..."
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
+mkdir -p $DIST_DEST_DIR
+echo "Thinning GCC to prepare package..."
+thinGcc $DEB_GCC_DIR
+copyGcc $DEB_GCC_DIR $DIST_DEST_DIR
 
 cloneMonoFramework
 modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
@@ -47,10 +52,12 @@ copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 
 cp $MAKEFILES $DIST_DEST_DIR
 writeConfigurationFile $DIST_DEST_DIR/configuration.sh
-makeConfigurationFile $DIST_DEST_DIR/predefines.mk "monoprog" "" "arm-none-eabi-"
+makeConfigurationFile $DIST_DEST_DIR/predefines.mk "monoprog" ""
 
 mkdir -p $PKGROOT/usr/bin
 symbolicLink bin/monomake monomake
+
+
 
 ##UDEV rules
 echo "Creating udev rules for USB device..."

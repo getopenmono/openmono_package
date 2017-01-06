@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION=1.4.3
-GIT_TAG="SDKv1_4"
+VERSION=1.5.0
+GIT_TAG="SDKv1_5"
 DOWNLOAD_URL="https://github.com/getopenmono/openmono_package/releases/download/$GIT_TAG/openmono_$VERSION.deb"
 FILENAME=`basename $DOWNLOAD_URL`
 export DEBIAN_FRONTEND=noninteractive
@@ -28,22 +28,6 @@ exec_cmd() {
 }
 
 print_status "Installing the OpenMono $VERSION..."
-
-# # Populating Cache
-print_status "Populating apt-get cache..."
-exec_cmd 'apt-get update  > /dev/null 2>&1'
-
-print_status "Getting add-apt-repositoty..."
-exec_cmd "apt-get install -y software-properties-common python-software-properties > /dev/null 2>&1"
-
-print_status "Adding PPA key for GCC ARM Embedded repo..."
-exec_cmd_nobail "add-apt-repository -y ppa:team-gcc-arm-embedded/ppa"
-
-print_status "Updating apt-get cache again..."
-exec_cmd "apt-get update > /dev/null 2>&1"
-
-#print_status "Installing GCC ARM Embedded..."
-#exec_cmd "apt-get -y install gcc-arm-embedded"
 
 print_status "Downloading OpenMono package..."
 exec_cmd "curl -Lo $FILENAME ${DOWNLOAD_URL}"
