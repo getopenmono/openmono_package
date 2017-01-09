@@ -25,10 +25,6 @@ if [[ $1 != "-ci" && -d $PKGROOT ]]; then
     echo "Re-assigning user priviledges..."
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
-mkdir -p $DIST_DEST_DIR
-echo "Thinning GCC to prepare package..."
-thinGcc $DEB_GCC_DIR
-copyGcc $DEB_GCC_DIR $DIST_DEST_DIR
 
 cloneMonoFramework
 modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
@@ -42,6 +38,10 @@ echo "Creating Post-install text!"
 mkdir -p "${PKGROOT}/DEBIAN"
 echo $POSTSCRIPT > ${PKGROOT}/DEBIAN/postinst
 chmod 0775 ${PKGROOT}/DEBIAN/postinst
+
+echo "Thinning GCC to prepare package..."
+thinGcc $DEB_GCC_DIR
+copyGcc $DEB_GCC_DIR $DIST_DEST_DIR
 
 cloneMonoProg
 compileMonoprog $MONOPROG_NAME/$MONOPROG_DEB_EXECUTABLE $DIST_DEST_DIR/monoprog/.
