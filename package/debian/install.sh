@@ -36,7 +36,7 @@ print_status "Installing OpenMono..."
 exec_cmd_nobail "dpkg -i openmono_$VERSION.deb"
 
 print_status "Installing dependencies..."
-exec_cmd_nobail "apt-get -f -y install > /dev/null 2>&1"
+exec_cmd_nobail "apt-get -f -y install"
 
 exec_cmd_nobail "pip install pyserial"
 
