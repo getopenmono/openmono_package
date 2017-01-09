@@ -1,7 +1,7 @@
 Package: openmono
 Architecture: %DEBARCH%
 Maintainer: Jens Peter Secher <jp@openmono.com>, Kristoffer Andersen <ka@openmono.com>
-Depends: libusb-1.0-0, libqt5core5a | qtbase-abi-5-2-1, libqt5serialport5, build-essential, python-pip
+Depends: libc6-i386, libusb-1.0-0, libqt5core5a | qtbase-abi-5-2-1, libqt5serialport5, build-essential, python-pip
 Priority: optional
 Section: utils
 Version: %VERSION%
