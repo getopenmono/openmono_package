@@ -99,8 +99,10 @@ function cloneMonoProg {
 
 function cloneMonoFramework {
 	if [ ! -d $MONOFRMWRK_NAME ]; then
-		echo "Cloning mono framework from GitHub..."
-		git clone $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME
+		BRANCHNAME="master"
+		if [[ $FRM_BRANCH != "" ]]; then BRANCHNAME=$FRM_BRANCH; fi
+		echo "Cloning mono framework ($BRANCHNAME) from GitHub..."
+		git clone -b $BRANCHNAME $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME
 	else
 		echo "Pulling mono framework changes from GitHub..."
 		cd $MONOFRMWRK_NAME
