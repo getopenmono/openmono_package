@@ -9,7 +9,7 @@ matrix:
   include:
     os: osx
     env: TARGET_OS=macos
-    env: QT_VERSION=5.7.1_1
+    env: QT_VERSION=5.8.0_1
 services: docker
 addons:
   apt:
