@@ -14,4 +14,5 @@ CMD export PATH=$PATH:$HOME/gcc-arm-none-eabi-5_2-2015q4/bin && \
   git clone -b $BRANCH https://github.com/getopenmono/openmono_package.git && \
   cd openmono_package/package/debian && \
   bash build.sh -ci && \
-  cp -r debpackage/*.deb $COPY_DEST
+  cp -r debpackage/*.deb $COPY_DEST && \
+  cp -r debpackage/*.deb.sha256 $COPY_DEST

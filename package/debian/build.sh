@@ -80,4 +80,5 @@ sudo chown -R root:root "${PKGROOT}"
 sudo dpkg-deb --build "${PKGROOT}"
 sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 
-shasum -a 256 "${PKGROOT}.deb" > "${PKGROOT}.deb.sha256"
+DEBFILENAME=`basename ${PKGROOT}.deb`
+cd `dirname ${PKGROOT}` && shasum -a 256 "${DEBFILENAME}" > "${DEBFILENAME}.sha256"
