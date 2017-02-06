@@ -79,3 +79,5 @@ echo "Building package..."
 sudo chown -R root:root "${PKGROOT}"
 sudo dpkg-deb --build "${PKGROOT}"
 sudo chown -R `whoami`:`whoami` "${PKGROOT}"
+
+shasum -a 256 "${PKGROOT}.deb" > "${PKGROOT}.deb.sha256"

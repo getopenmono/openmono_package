@@ -124,4 +124,7 @@ fi
 
 echo "Creating TGZ Mac package for those who hate PKG installers..."
 tar -czf "$PACKAGE_NAME.tgz" -C "`dirname $DIST_DEST_DIR`" "`basename $DIST_DEST_DIR`"
+shasum -a 256 "$PACKAGE_NAME.pkg" > "$PACKAGE_NAME.pkg.sha256"
+shasum -a 256 "$PACKAGE_NAME.tgz" > "$PACKAGE_NAME.tgz.sha256"
+
 echo "All Done"
