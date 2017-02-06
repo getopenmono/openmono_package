@@ -108,4 +108,6 @@ elif [[ $1 == "-ci" && -f "$WIN_CERT" ]]; then
 	rm -f "./$WIN_CERT"
 fi
 
+sha1sum.exe "OpenMonoSetup-v$VERSION.exe" > "OpenMonoSetup-v$VERSION.exe.sha1"
+
 echo "All is done!"
