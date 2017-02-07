@@ -2,6 +2,7 @@ source ../configuration.sh
 source ../common.sh
 
 WIN_CERT="monolit-cert.p12"
+WIN_MONOMAKE_REPO="https://github.com/getopenmono/win_reset_tool.git"
 ARCH=86
 PACKAGE_NAME=OpenMono-v$VERSION.exe
 BINDIR=../../$BINDIR
@@ -14,6 +15,22 @@ GCC_PATH="\"../$WIN_GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
 
 function downloadMake {
 	curl -O -L $WIN_MINGW_MAKE_PATH
+}
+
+function buildMonomake {
+	echo "Building Monomake..."
+	git clone $WIN_MONOMAKE_REPO
+	cd win_reset_tool/monomake
+	echo "Replacing version to $VERSION..."
+	sed -ie "s/version = \".*\"/version = \"$VERSION\"/" Program.cs
+	MSBuild.exe //p:Configuration=Release
+	
+	if [[ ! -f bin/Release/monomake.exe ]]; then
+		echo "Error: monomake.exe was not compiled!"
+		exit 1
+	fi
+	cp bin/Release/monomake.exe ../../$DISTDIR/bin/monomake.exe
+	cd ../..
 }
 
 function checkExists {
@@ -62,6 +79,8 @@ copyFiles "Windows specific binaries" $MSYS_MAKE_DIR $DIST_DEST_DIR
 copyFiles "generic binaries" $BINDIR $DIST_DEST_DIR
 copyFiles "templates" $TEMPLATE_DIR $DIST_DEST_DIR
 cp $MAKEFILES_WIN $DIST_DEST_DIR/.
+
+buildMonomake
 
 # Build little helper
 buildLittleHelper $LITTLE_HELPER_WIN_ARTIFACT `pwd`
