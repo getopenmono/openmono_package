@@ -23,7 +23,7 @@ function buildMonomake {
 	cd win_reset_tool/monomake
 	echo "Replacing version to $VERSION..."
 	sed -ie "s/version = \".*\"/version = \"$VERSION\"/" Program.cs
-	MSBuild.exe //p:Configuration=Release ../monomake.sln
+	MSBuild.exe //p:Configuration=Release //p:Platform=AnyCPU
 	
 	if [[ ! -f bin/Release/monomake.exe ]]; then
 		echo "Error: monomake.exe was not compiled!"
