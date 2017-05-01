@@ -41,6 +41,11 @@ fi
 # fi
 # checkExists git'
 
+if [[ -d $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR ]]; then
+	echo "Removing MonoMake-UI from distdir..."
+	rm -rf $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
+fi
+
 buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd`
 mkdir -p $LITTLE_HELPER_DISTDIR
 echo "Unzipping Monomake-UI for Package installer..."
@@ -74,7 +79,7 @@ buildMonoFramework
 cloneMonoProg
 compileMonoprogMac "$MONOPROG_NAME/$MONOPROG_MAC_EXECUTABLE" $DIST_DEST_DIR/monoprog/.
 
-# # downloadGcc $GCC_ARM_MAC_URL
+downloadGcc $GCC_ARM_MAC_URL
 thinGcc $GCC_ARM_DIR_NAME
 copyGcc $GCC_ARM_DIR_NAME $DIST_DEST_DIR
 
