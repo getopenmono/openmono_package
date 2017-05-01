@@ -69,7 +69,7 @@ modifyMakefile $MONOFRMWRK_NAME $GCC_PATH
 if [[ ! -f $MONOFRMWRK_NAME/build ]]; then
 	mkdir -p $MONOFRMWRK_NAME/build
 fi
-buildMonoFramework
+buildMonoFramework win
 
 cloneMonoProg
 compileMonoprogWin $MONOPROG_NAME/$MONOPROG_WIN_EXECUTABLE $DIST_DEST_DIR/monoprog/.
