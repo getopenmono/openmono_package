@@ -19,7 +19,7 @@ build_script:
 - cmd: >-
     cd package/win
 
-    set PATH=%PATH%;C:\MinGW\bin;C:\MinGW\msys\1.0\bin;C:\Qt\5.5\msvc2013\bin
+    set PATH=%PATH%;C:\MinGW\bin;C:\MinGW\msys\1.0\bin;C:\Qt\5.7\msvc2013\bin
 
     bash win_build.sh -ci
 artifacts:
