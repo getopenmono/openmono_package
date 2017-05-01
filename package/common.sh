@@ -172,6 +172,7 @@ function buildMonoFramework {
 	cd $MONOFRMWRK_NAME
 	COMMIT=`git show --oneline -s`
 	echo "Building commit: $COMMIT"
+	bash resources/setup_icons.sh resources/icons.mk.tmp dist
 	make clean
 	SUCCESS=$?
     if [ ! $SUCCESS ]; then

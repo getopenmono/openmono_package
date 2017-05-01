@@ -1,4 +1,4 @@
-FROM debian
+FROM ubuntu:zesty
 RUN apt-get update -qq && \
   apt-get install -qq qt5-default qttools5-dev-tools devscripts libusb-1.0-0-dev \
    libudev-dev libqt5serialport5-dev libc6-i386 wget git sudo icnsutils graphicsmagick
