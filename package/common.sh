@@ -98,9 +98,9 @@ function cloneMonoProg {
 }
 
 function cloneMonoFramework {
+	BRANCHNAME="master"
+	if [[ $FRM_BRANCH != "" ]]; then BRANCHNAME=$FRM_BRANCH; fi
 	if [ ! -d $MONOFRMWRK_NAME ]; then
-		BRANCHNAME="master"
-		if [[ $FRM_BRANCH != "" ]]; then BRANCHNAME=$FRM_BRANCH; fi
 		echo "Cloning mono framework ($BRANCHNAME) from GitHub..."
 		git clone -b $BRANCHNAME $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME
 	else
@@ -108,13 +108,14 @@ function cloneMonoFramework {
 		cd $MONOFRMWRK_NAME
 		git checkout -- .
 		git pull
+		git co $BRANCHNAME
 		cd ..
 	fi
 }
 
 function cloneMbedLibrary {
 	if [ ! -d $MBED_LIB_NAME ]; then
-		echo "Cloing mbed Library from GitHub..."
+		echo "Cloning mbed Library from GitHub..."
 		git clone $MBED_LIB_GIT_URL $MBED_LIB_NAME
 	else
 		echo "Pulling mbed Library changes from GitHub..."
