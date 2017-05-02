@@ -108,7 +108,7 @@ function cloneMonoFramework {
 		cd $MONOFRMWRK_NAME
 		git checkout -- .
 		git pull
-		git co $BRANCHNAME
+		git checkout $BRANCHNAME
 		cd ..
 	fi
 }
