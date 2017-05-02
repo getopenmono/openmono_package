@@ -12,6 +12,7 @@ DISTDIR=dist
 DIST_DEST_DIR="$DISTDIR"
 GCC_ARM_DIR_NAME=$WIN_GCC_ARM_DIR_NAME
 GCC_PATH="\"../$WIN_GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
+if [ $APPVEYOR_REPO_BRANCH ]; then echo "Setting mono branch: $APPVEYOR_REPO_BRANCH"; FRM_BRANCH=$APPVEYOR_REPO_BRANCH; fi
 
 function downloadMake {
 	curl -O -L $WIN_MINGW_MAKE_PATH
