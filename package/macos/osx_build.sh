@@ -7,8 +7,15 @@ PACKAGE_NAME=OpenMono-v$VERSION-Mac
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=../../$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
-DISTDIR=dist
 DIST_DEST_DIR="$DISTDIR/usr/local/openmono"
+NO_LH_OPT="--no-littlehelper"
+NO_PKG_OPT="--no-package"
+
+if [ ! $DISTDIR ]; then
+	DISTDIR=dist
+fi
+
+echo "Destination is: $DISTDIR"
 
 if [[ $1 == "-ci" ]]; then
 	echo "Running on CI env. Setting GCC_ARM_DIR_NAME to:"
@@ -30,7 +37,7 @@ function symbolicLink {
     ln -s "../openmono/$1" "$DISTDIR/usr/local/bin/$2"
 }
 
-if [[ $1 != "-ci" ]]; then
+if [[ $1 != "-ci" && $1 != "--no-confirm" ]]; then
 	confirmBuild
 else
 	echo "Auto building v $VERSION"
@@ -45,13 +52,16 @@ if [[ -d $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR ]]; then
 	echo "Removing MonoMake-UI from distdir..."
 	rm -rf $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
 fi
-
-buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd`
-mkdir -p $LITTLE_HELPER_DISTDIR
-echo "Unzipping Monomake-UI for Package installer..."
-unzip $(basename $LITTLE_HELPER_MAC_ARTIFACT) -d $LITTLE_HELPER_DISTDIR
-mkdir -p $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
-mv $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_MAC_EXE $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR/Monomake.app
+if [[ $1 == $NO_LH_OPT || $# > 1 && $2 == $NO_LH_OPT ]]; then
+	echo "Skipping little helper"
+else
+	buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd`
+	mkdir -p $LITTLE_HELPER_DISTDIR
+	echo "Unzipping Monomake-UI for Package installer..."
+	unzip $(basename $LITTLE_HELPER_MAC_ARTIFACT) -d $LITTLE_HELPER_DISTDIR
+	mkdir -p $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR
+	mv $LITTLE_HELPER_DISTDIR/$LITTLE_HELPER_MAC_EXE $DISTDIR/$LITTLE_HELPER_MAC_DISTDIR/Monomake.app
+fi
 
 # Download GCC
 if [[ $1 != "-ci" && ! -e $GCC_ARM_DIR_NAME ]]; then
@@ -99,37 +109,45 @@ if [ ! hash macdeployqt 2>/dev/null; then
 fi
 macdeployqt $DIST_DEST_DIR/monoprog/monoprog.app -no-plugins
 
-if ! hash pkgbuild 2>/dev/null; then
-    echo pkgbuild does not exist, cannot create package.
-    exit 3
-fi
+function buildPackage {
+	if ! hash pkgbuild 2>/dev/null; then
+	    echo pkgbuild does not exist, cannot create package.
+	    exit 3
+	fi
 
-echo "Building package..."
-if [[ $1 != "-ci" && $1 != "--no-sign" ]]; then
-    pkgbuild \
-        --root "$DISTDIR" \
-        --component-plist component.plist \
-        --identifier com.openmono.monoframework \
-        --version $VERSION \
-        --install-location / \
-        --scripts scripts \
-        --sign "Developer ID Installer: Monolit ApS (MUXP6TEH5D)" \
-        "$PACKAGE_NAME.pkg"
+	echo "Building package..."
+	if [[ $1 != "-ci" && $1 != "--no-sign" ]]; then
+	    pkgbuild \
+	        --root "$DISTDIR" \
+	        --component-plist component.plist \
+	        --identifier com.openmono.monoframework \
+	        --version $VERSION \
+	        --install-location / \
+	        --scripts scripts \
+	        --sign "Developer ID Installer: Monolit ApS (MUXP6TEH5D)" \
+	        "$PACKAGE_NAME.pkg"
+	else
+	    echo "(Unsigned)"
+	    pkgbuild \
+	        --root "$DISTDIR" \
+	        --component-plist component.plist \
+	        --identifier com.openmono.monoframework \
+	        --version $VERSION \
+	        --install-location / \
+	        --scripts scripts \
+	        "$PACKAGE_NAME.pkg"
+	fi
+
+	echo "Creating TGZ Mac package for those who hate PKG installers..."
+	tar -czf "$PACKAGE_NAME.tgz" -C "`dirname $DIST_DEST_DIR`" "`basename $DIST_DEST_DIR`"
+	shasum -a 256 "$PACKAGE_NAME.pkg" > "$PACKAGE_NAME.pkg.sha256"
+	shasum -a 256 "$PACKAGE_NAME.tgz" > "$PACKAGE_NAME.tgz.sha256"
+}
+
+if [[ $# > 1 && $2 == $NO_PKG_OPT || $# > 2 && $3 == $NO_PKG_OPT ]]; then
+	echo "Skipping package build"
 else
-    echo "(Unsigned)"
-    pkgbuild \
-        --root "$DISTDIR" \
-        --component-plist component.plist \
-        --identifier com.openmono.monoframework \
-        --version $VERSION \
-        --install-location / \
-        --scripts scripts \
-        "$PACKAGE_NAME.pkg"
+	buildPackage
 fi
-
-echo "Creating TGZ Mac package for those who hate PKG installers..."
-tar -czf "$PACKAGE_NAME.tgz" -C "`dirname $DIST_DEST_DIR`" "`basename $DIST_DEST_DIR`"
-shasum -a 256 "$PACKAGE_NAME.pkg" > "$PACKAGE_NAME.pkg.sha256"
-shasum -a 256 "$PACKAGE_NAME.tgz" > "$PACKAGE_NAME.tgz.sha256"
 
 echo "All Done"
