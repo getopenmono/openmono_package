@@ -7,13 +7,13 @@ PACKAGE_NAME=OpenMono-v$VERSION-Mac
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=../../$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
-DIST_DEST_DIR="$DISTDIR/usr/local/openmono"
 NO_LH_OPT="--no-littlehelper"
 NO_PKG_OPT="--no-package"
 
 if [ ! $DISTDIR ]; then
 	DISTDIR=dist
 fi
+DIST_DEST_DIR="$DISTDIR/usr/local/openmono"
 
 echo "Destination is: $DISTDIR"
 

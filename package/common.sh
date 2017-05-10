@@ -174,9 +174,9 @@ function buildMonoFramework {
 	COMMIT=`git show --oneline -s`
 	echo "Building commit: $COMMIT"
 	if [[ $1 == "win" ]]; then
-		bash resources/setup_icons.sh resources/icons.mk.tmp dist win
+		bash resources/setup_icons.sh resources/icons.mk.tmp "../../$DIST_DEST_DIR" win
 	else
-		bash resources/setup_icons.sh resources/icons.mk.tmp dist
+		bash resources/setup_icons.sh resources/icons.mk.tmp "../../$DIST_DEST_DIR"
 	fi
 	make clean
 	SUCCESS=$?
