@@ -107,13 +107,13 @@ writePSConfigurationFile $DIST_DEST_DIR/configuration.ps1 $(basename $MONOPROG_W
 makeConfigurationFile $DIST_DEST_DIR/predefines.mk $(basename $MONOPROG_WIN_EXECUTABLE) "$MONOMAKE_POWERSHELL"
 #symbolicLink bin/monomake monomake
 sed -i.bak "s#set VERSION=.*#set VERSION=$VERSION#g" ./build-nsis.bat
-./build-nsis.bat
+./build-nsis.bat || exit 1
 echo "Creating ZIP archive..."
 zip -r "OpenMonoSDK-v$VERSION.zip" $DIST_DEST_DIR
 
 if [[ $1 != "-ci" || -f "$WIN_CERT" ]]; then
 	echo "Signing executable..."
-	powershell.exe -File ./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe"
+	powershell.exe -File ./sign.ps1 "$WIN_CERT" "OpenMonoSetup-v$VERSION.exe" || exit 1
 fi
 
 if [[ $1 != "-ci" ]]; then

@@ -18,8 +18,8 @@ WIN_VC2013_X64_REDIST_URL="https://download.microsoft.com/download/2/E/6/2E61CFA
 WIN_VC2013_X64_REDIST_FILE="${WIN_VC2013_X64_REDIST_URL##*/}"
 WIN_VC2013_X86_REDIST_URL="https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe"
 WIN_VC2013_X86_REDIST_FILE="${WIN_VC2013_X86_REDIST_URL##*/}"
-WIN_VC2015_X86_REDIST_URL="https://www.microsoft.com/en-us/download/confirmation.aspx?id=48145&6B49FDFB-8E5B-4B07-BC31-15695C5A2143=1"
-WIN_VC2015_X86_REDIST_FILE="vc_redist.x86.exe"
+WIN_VC2015_X86_REDIST_URL="https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x86.exe"
+WIN_VC2015_X86_REDIST_FILE="${WIN_VC2015_X86_REDIST_URL##*/}"
 
 MAKEFILES="../../mono_default_main.cpp ../../mono.mk ../../Build.mk ../../reboot.py ../../probe_serial.py"
 MAKEFILES_WIN="$MAKEFILES reset.exe ../../delete_file_silent.bat ../../delete_dir_silent.bat"
