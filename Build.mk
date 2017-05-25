@@ -27,7 +27,9 @@ MONO_INCLUDES = $(MONO_FRAMEWORK_PATH)/include \
 				$(MONO_FRAMEWORK_PATH)/include/display \
 				$(MONO_FRAMEWORK_PATH)/include/display/ili9225g \
 				$(MONO_FRAMEWORK_PATH)/include/display/ui \
+				$(MONO_FRAMEWORK_PATH)/include/io \
 				$(MONO_FRAMEWORK_PATH)/include/media \
+				$(MONO_FRAMEWORK_PATH)/include/sensors \
 				$(MONO_FRAMEWORK_PATH)/include/wireless
 
 TARGET_OBJECTS = $(addprefix $(BUILD_DIR)/, $(OBJECTS))

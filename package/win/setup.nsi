@@ -62,7 +62,7 @@ Section "SDK (Required)" SecInstall
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
 				 "Publisher" "OpenMono (Monolit ApS)"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
-				 "DisplayVersion" "${MUI_VERSION}"
+				 "DisplayVersion" "\$"$VERSION$\""
 				 WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenMono" \
 				 "EstimatedSize" "290000"
 
