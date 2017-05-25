@@ -107,7 +107,7 @@ function cloneMonoFramework {
 		echo "Pulling mono framework changes from GitHub..."
 		cd $MONOFRMWRK_NAME && \
 		git reset --hard && \
-		git clean -f && \
+		git clean -fXd && \
 		git checkout $BRANCHNAME && \
 		git pull && \
 		cd .. || exit 1
