@@ -13,7 +13,6 @@ install:
     - secure-file\tools\secure-file -decrypt package\win\monolit-cert.p12.enc -secret %my_secret% -out package\win\monolit-cert.p12
 cache:
 - package/win/gcc-arm-none-eabi-5_2-2015q4-20151219-win32
-- package/win/mono_framework
 - package/win/monoprog
 build_script:
 - cmd: >-

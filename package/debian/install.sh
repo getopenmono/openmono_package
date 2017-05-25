@@ -1,7 +1,7 @@
 #!/bin/bash
 
-VERSION=1.6.1
-GIT_TAG="SDKv1_6"
+VERSION=1.7.0
+GIT_TAG="SDKv1_7"
 DOWNLOAD_URL="https://github.com/getopenmono/openmono_package/releases/download/$GIT_TAG/openmono_$VERSION.deb"
 FILENAME=`basename $DOWNLOAD_URL`
 export DEBIAN_FRONTEND=noninteractive
