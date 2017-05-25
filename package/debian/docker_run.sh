@@ -18,4 +18,4 @@ if [[ $# -ge 3 ]]; then
 	ENVS="$ENVS -e FRM_BRANCH=$3"
 fi
 
-docker run -ti -v $1:/Desktop $ENVS monobuild
+docker run -ti -v $1:/Desktop $ENVS monolit/packagebuild

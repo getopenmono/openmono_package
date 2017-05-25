@@ -16,7 +16,7 @@ AppController::AppController() :
     helloLabel.setAlignment(TextLabelView::ALIGN_CENTER);
 
     // set another text color
-    helloLabel.setTextColor(display::TurquoiseColor);
+    helloLabel.setText(display::TurquoiseColor);
 }
 
 void AppController::monoWakeFromReset()
