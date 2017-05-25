@@ -102,14 +102,15 @@ function cloneMonoFramework {
 	if [[ $FRM_BRANCH != "" ]]; then BRANCHNAME=$FRM_BRANCH; fi
 	if [ ! -d $MONOFRMWRK_NAME ]; then
 		echo "Cloning mono framework ($BRANCHNAME) from GitHub..."
-		git clone -b $BRANCHNAME $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME
+		git clone -b $BRANCHNAME $MONOFRMWRK_GIT_URL $MONOFRMWRK_NAME || exit 1
 	else
 		echo "Pulling mono framework changes from GitHub..."
-		cd $MONOFRMWRK_NAME
-		git checkout -- .
-		git checkout $BRANCHNAME
-		git pull
-		cd ..
+		cd $MONOFRMWRK_NAME && \
+		git reset --hard && \
+		git clean -f && \
+		git checkout $BRANCHNAME && \
+		git pull && \
+		cd .. || exit 1
 	fi
 }
 
