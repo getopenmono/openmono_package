@@ -107,8 +107,8 @@ function cloneMonoFramework {
 		echo "Pulling mono framework changes from GitHub..."
 		cd $MONOFRMWRK_NAME
 		git checkout -- .
-		git pull
 		git checkout $BRANCHNAME
+		git pull
 		cd ..
 	fi
 }
