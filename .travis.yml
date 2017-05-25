@@ -13,16 +13,15 @@ matrix:
       - QT_VERSION=5.7.1
       - QT_DIR=qt@5.7
 services: docker
-addons:
-  apt:
-    packages:
-      - libc6-i386
-      - icnsutils
-      - graphicsmagick
+# addons:
+#   apt:
+#     packages:
+#       - libc6-i386
+#       - icnsutils
+#       - graphicsmagick
 cache:
   directories:
   - "$HOME/gcc-arm-none-eabi-5_2-2015q4"
-  - package/$TARGET_OS/mono_framework
   - package/$TARGET_OS/monoprog
   - package/$TARGET_OS/little-helper
 compiler:
