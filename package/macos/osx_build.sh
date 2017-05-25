@@ -16,6 +16,10 @@ fi
 DIST_DEST_DIR="$DISTDIR/usr/local/openmono"
 
 echo "Destination is: $DISTDIR"
+printf "NodeJs "
+node -v
+printf "npm v"
+npm -v
 
 if [[ $1 == "-ci" ]]; then
 	echo "Running on CI env. Setting GCC_ARM_DIR_NAME to:"
@@ -55,7 +59,7 @@ fi
 if [[ $1 == $NO_LH_OPT || $# > 1 && $2 == $NO_LH_OPT ]]; then
 	echo "Skipping little helper"
 else
-	buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd`
+	buildLittleHelper $LITTLE_HELPER_MAC_ARTIFACT `pwd` || exit 1
 	mkdir -p $LITTLE_HELPER_DISTDIR
 	echo "Unzipping Monomake-UI for Package installer..."
 	unzip $(basename $LITTLE_HELPER_MAC_ARTIFACT) -d $LITTLE_HELPER_DISTDIR
@@ -78,13 +82,13 @@ if [[ $1 != "-ci" && ! -e $GCC_ARM_DIR_NAME ]]; then
 	tar xfj $GCC_ARCHIVE
 fi
 
-cloneMonoFramework
+cloneMonoFramework || exit 1
 if [[ $1 == "-ci" ]]; then
     modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
 else
     modifyMakefile $MONOFRMWRK_NAME
 fi
-buildMonoFramework
+buildMonoFramework || exit 1
 
 cloneMonoProg
 compileMonoprogMac "$MONOPROG_NAME/$MONOPROG_MAC_EXECUTABLE" $DIST_DEST_DIR/monoprog/.

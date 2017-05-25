@@ -106,6 +106,8 @@ function cloneMonoFramework {
 	else
 		echo "Pulling mono framework changes from GitHub..."
 		cd $MONOFRMWRK_NAME && \
+		echo `pwd` && \
+		git status && \
 		git reset --hard && \
 		git clean -fXd && \
 		git checkout $BRANCHNAME && \
