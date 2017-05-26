@@ -1,9 +1,9 @@
-version: 1.4.{build}
+version: 1.7.{build}
 branches:
   only:
   - master
   - prerelease
-image: Visual Studio 2015
+image: Visual Studio 2013
 platform: x86
 environment:
     my_secret:
@@ -18,7 +18,7 @@ build_script:
 - cmd: >-
     cd package/win
 
-    set PATH=%PATH%;C:\MinGW\bin;C:\MinGW\msys\1.0\bin;C:\Qt\5.7\msvc2015\bin
+    set PATH=%PATH%;C:\MinGW\bin;C:\MinGW\msys\1.0\bin;C:\Qt\5.7\msvc2013\bin
 
     bash win_build.sh -ci
 artifacts:
