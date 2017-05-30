@@ -3,6 +3,8 @@
 source ../configuration.sh
 source ../common.sh
 
+if [ ! $MONO_FRM_PATH ]; then $MONO_FRM_PATH="/Desktop/mono"; fi
+
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=./mono_framework/dist/$FRAMEWORK_DIR
 TEMPLATE_DIR=../../$TEMPLATE_DIR
@@ -26,9 +28,15 @@ if [[ $1 != "-ci" && -d $PKGROOT ]]; then
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
 
-cloneMonoFramework
-modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
-buildMonoFramework
+#cloneMonoFramework 
+#modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
+#buildMonoFramework
+if [ ! -d $MONO_FRM_PATH ]; then
+	echo "ERROR: Mono Framework build not found at: $MONO_FRM_PATH"
+	exit 1
+fi
+echo "Copying Mono Frm from $MONO_FRM_PATH --> $DIST_DEST_DIR"
+cp -r $MONO_FRM_PATH $DIST_DEST_DIR
 
 # Build Little Helper
 mkdir -p $DIST_DEST_DIR

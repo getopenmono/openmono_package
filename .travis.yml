@@ -42,7 +42,7 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:$GCC_DIR/bin; fi
 script:
   - echo Building on $TRAVIS_OS_NAME...
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd package/debian; bash docker_run.sh `pwd` $TRAVIS_BRANCH; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd package/debian; bash ci_build.sh `pwd` $TRAVIS_BRANCH; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd package/macos; bash osx_build.sh -ci; fi
 notifications:
   email: false
