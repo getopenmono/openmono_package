@@ -24,4 +24,4 @@ fi
 echo "Using Docker img. $FRM_DOCKER_IMAGE, to pull branch $FRM_BRANCH and copy build to $FRM_DEST"
 
 docker pull $FRM_DOCKER_IMAGE && \
-docker run -tie DEPLOY=true -e BRANCH=$FRM_BRANCH -v `pwd`/$FRM_DEST:/Desktop $FRM_DOCKER_IMAGE
+docker run -tie DEPLOY=true -e BRANCH=$FRM_BRANCH -v $FRM_DEST:/Desktop $FRM_DOCKER_IMAGE
