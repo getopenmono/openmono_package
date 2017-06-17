@@ -28,7 +28,7 @@ function buildLittleHelper {
 	echo "Building little helper..."
 	cd little-helper && \
 	echo "Setting version to $VERSION..." && node ../../replaceVersion.js "package.json" "$VERSION" && \
-	npm install && \
+	npm install --unsafe-perm && \
 	npm run dist && cp $1 $2 && cp build/elf.ico $2 && cd ..
 	
 	SUCCESS=$?
