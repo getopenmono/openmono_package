@@ -28,6 +28,7 @@ if [[ $1 != "-ci" && -d $PKGROOT ]]; then
 	sudo chown -R `whoami`:`whoami` "${PKGROOT}"
 fi
 
+mkdir -p $DIST_DEST_DIR
 #cloneMonoFramework 
 #modifyMakefile $MONOFRMWRK_NAME "arm-none-eabi-"
 #buildMonoFramework
@@ -36,10 +37,9 @@ if [ ! -d $MONO_FRM_PATH ]; then
 	exit 1
 fi
 echo "Copying Mono Frm from $MONO_FRM_PATH --> $DIST_DEST_DIR"
-cp -r $MONO_FRM_PATH $DIST_DEST_DIR
+cp -r $MONO_FRM_PATH $DIST_DEST_DIR || exit 1
 
 # Build Little Helper
-mkdir -p $DIST_DEST_DIR
 buildLittleHelper $LITTLE_HELPER_DEB_ARTIFACT `pwd`/$DIST_DEST_DIR
 POSTSCRIPT="echo \"\n\tOpenMono SDK Installed!\n\tYou can install the GUI client for monomake by running:\n\tsudo dpkg -i /usr/lib/openmono/$(basename $LITTLE_HELPER_DEB_ARTIFACT)\n\""
 echo "Creating Post-install text!"
