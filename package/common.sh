@@ -12,9 +12,9 @@ function buildLittleHelper {
 	if ! hash npm; then
 		echo "NodeJs NPM not found in path!"
 	fi
-	
+
 	echo "Copy result: $1 --> $2"
-	
+
 	if [[ -d "little-helper/.git" ]]; then
 		echo "Resetting source repo and pulling Git changes..."
 		cd "little-helper"
@@ -24,15 +24,15 @@ function buildLittleHelper {
 	else
 		git clone $LITTLE_HELPER_GIT "little-helper"
 	fi
-	
+
 	echo "Building little helper..."
 	cd little-helper && \
 	echo "Setting version to $VERSION..." && node ../../replaceVersion.js "package.json" "$VERSION" && \
 	npm install --unsafe-perm && \
 	npm run dist && cp $1 $2 && cp build/elf.ico $2 && cd ..
-	
+
 	SUCCESS=$?
-	
+
 	if ! [ $SUCCESS ]; then
 		echo "failed to build little helper!"
 		exit 1
@@ -41,18 +41,18 @@ function buildLittleHelper {
 
 function downloadGcc {
 	FILE=$(basename $1)
-	
+
 	if [[ ! -f $FILE && ! -d $GCC_ARM_DIR_NAME ]]; then
 		echo "Downloading GCC Embedded Arm..."
 		curl -O -L $1
 	else
 		echo "Skipping GCC download"
 	fi
-	
+
 	if [ ! -d $GCC_ARM_DIR_NAME ]; then
 		extension="${FILE##*.}"
 		echo "Extracting GCC... ($extension)"
-		
+
 		if [[ $extension == "zip" ]]; then
 			unzip -qn $FILE -d $GCC_ARM_DIR_NAME
 		else
@@ -61,7 +61,7 @@ function downloadGcc {
 	else
 		echo "GCC is already extracted"
 	fi
-	
+
 	if [ ! -d $GCC_ARM_DIR_NAME ]; then
 		echo "Error: extracted directory is not named $GCC_ARM_DIR_NAME"
 		exit 1
@@ -98,7 +98,7 @@ function cloneMonoProg {
 }
 
 function cloneMonoFramework {
-	BRANCHNAME="master"
+	BRANCHNAME="production"
 	if [[ $FRM_BRANCH != "" ]]; then BRANCHNAME=$FRM_BRANCH; fi
 	if [ ! -d $MONOFRMWRK_NAME ]; then
 		echo "Cloning mono framework ($BRANCHNAME) from GitHub..."
@@ -187,7 +187,7 @@ function buildMonoFramework {
     	echo "ERROR: Build was unsuccessful. Aborting!"
         exit 1
     fi
-    
+
 	make release
     SUCCESS=$?
     if [ ! $SUCCESS ]; then
@@ -225,7 +225,7 @@ function compileMonoprogMac {
 	cd $CUR_DIR
 	echo "Copying to monoprog dist... ($1 --> $2)"
 	mkdir -p $2
-	cp -r $1 $2 
+	cp -r $1 $2
 }
 
 function compileMonoprogWin {
@@ -243,13 +243,13 @@ function compileMonoprogWin {
 	if ! [ $? ]; then
 		exit 1
 	fi
-	
+
 	cd $CUR_DIR
 	echo "Copying to monoprog dist..."
 	mkdir -p $2
 	cp -r $1 $2
 	windeployqt.exe $2/monoprog.exe --release --no-translations --dir $2
-	
+
 	if ! [ $? ]; then
 		exit 1
 	fi
@@ -293,14 +293,14 @@ function makeConfigurationFile {
 	echo "Writing $1..."
 	echo "# This is an auto generated file for OpenMono SDK $VERSION" > $1
 	echo "" >> $1
-	
+
 	if [ "$4" = "" ]; then
 		echo "ARCH=\"\$(MONO_PATH)/$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\"" >> $1
 	else
 		echo "Writing custom Makefile ARCH variable: $4"
 		echo "ARCH=\"$4\"" >> $1
 	fi
-	
+
 	echo "INCLUDE_DIR=\$(MONO_PATH)/mono/include/mbed/target_cypress" >> $1
 	echo "BUILD_DIR=build" >> $1
 	echo "MONO_FRAMEWORK_PATH=\$(MONO_PATH)/mono" >> $1
@@ -326,25 +326,25 @@ function modifyMakefile {
         echo "ERROR: No GCC executable on $2!"
         exit 1
     fi
-    
+
     if [ -z "$2" ]; then
         echo "Using default GCC ARCH value: \"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
-        
+
         if ! [ -f "$1/../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-gcc" ]; then
             echo "ERROR: No GCC compiler found at: $1/../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-!"
             exit 1
         fi
-        
+
         MK_ARCH="ARCH=\"../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
     else
         MK_ARCH="ARCH=$2"
     fi
-    
+
     echo "replacing GCC file path in makefile to: $MK_ARCH"
     sed -i.bak "s#ARCH=\".*\"#$MK_ARCH#g" $1/Makefile
     if [ -z "$2" ]; then
         MK_ARCH="ARCH=\"../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-\""
-        
+
         if ! [ -f "$1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-gcc" ]; then
             echo "ERROR: No compiler found at: $1/src/cypress/../../../$GCC_ARM_DIR_NAME/bin/arm-none-eabi-"
             exit 1
@@ -354,9 +354,9 @@ function modifyMakefile {
     else
         echo "GCC is in path!"
     fi
-    
+
     echo "   - and recursive harmful makefiles to: $MK_ARCH"
-    
+
     sed -i.bak "s#ARCH=\".*\"#$MK_ARCH#g" $1/src/cypress/Makefile
     sed -i.bak "s#ARCH=\".*\"#$MK_ARCH#g" $1/src/mbedcomp/Makefile
 
@@ -373,10 +373,10 @@ function modifyMakefile {
 function thinGcc {
 	echo "Thinning GCC: docs"
 	deleteSilent ./$1/share/doc
-	
+
 	echo "Thinning GCC: samples"
 	deleteSilent ./$1/share/gcc-arm-none-eabi/samples
-	
+
 	echo "Thinning GCC: armv6-m, armv7-ar, armv7e-m, armv8-m & fpu libs"
 	LIBS="./$1/lib/gcc/arm-none-eabi/5.2.1"
 	deleteSilent $LIBS/armv6-m
@@ -385,7 +385,7 @@ function thinGcc {
 	deleteSilent $LIBS/armv8-m.base
 	deleteSilent $LIBS/armv8-m.main
 	deleteSilent $LIBS/fpu
-	
+
 	LIBS="./$1/arm-none-eabi/lib"
 	deleteSilent $LIBS/armv6-m
 	deleteSilent $LIBS/armv7-ar
