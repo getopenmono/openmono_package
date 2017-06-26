@@ -14,10 +14,17 @@ fi
 
 OUTPATH=$1
 BRANCH=master
+FRM_BRANCH=master
 if [ $# -gt 1 ]; then
-	$BRANCH=$2
+	echo "Setting BRANCH: $2"
+	BRANCH=$2
+fi
+
+if [ $# -gt 2 ]; then
+	echo "Setting FRM_BRANCH: $3"
+	FRM_BRANCH=$3
 fi
 
 echo "Build framework..."
 bash build_frm.sh $OUTPATH && \
-bash docker_run.sh $OUTPATH $BRANCH
+bash docker_run.sh $OUTPATH $BRANCH $FRM_BRANCH

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=1.7.0
+VERSION=1.7.1
 GIT_TAG="SDKv1_7"
 DOWNLOAD_URL="https://github.com/getopenmono/openmono_package/releases/download/$GIT_TAG/openmono_$VERSION.deb"
 FILENAME=`basename $DOWNLOAD_URL`
@@ -31,6 +31,9 @@ print_status "Installing the OpenMono $VERSION..."
 
 print_status "Downloading OpenMono package..."
 exec_cmd "curl -Lo $FILENAME ${DOWNLOAD_URL}"
+
+print_status "Updating Apt-Get repo..."
+exec_cmd "apt-get update"
 
 print_status "Installing OpenMono..."
 exec_cmd_nobail "dpkg -i openmono_$VERSION.deb"
