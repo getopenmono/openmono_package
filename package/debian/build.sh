@@ -3,7 +3,7 @@
 source ../configuration.sh
 source ../common.sh
 
-if [ ! $MONO_FRM_PATH ]; then $MONO_FRM_PATH="/Desktop/mono"; fi
+if [ ! $MONO_FRM_PATH ]; then MONO_FRM_PATH="/Desktop/mono"; fi
 
 BINDIR=../../$BINDIR
 FRAMEWORK_DIR=./mono_framework/dist/$FRAMEWORK_DIR
