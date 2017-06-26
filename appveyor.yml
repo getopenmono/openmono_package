@@ -2,7 +2,7 @@ version: 1.7.{build}
 branches:
   only:
   - master
-  - prerelease
+  - production
 image: Visual Studio 2013
 platform: x86
 environment:
