@@ -3,17 +3,18 @@ branches:
   - master
   - production
 language: cpp
-sudo: required
 matrix:
   include:
   - os: linux
+    sudo: required
+    dist: trusty
     env: TARGET_OS=debian
+    services: docker
   - os: osx
     env:
     - TARGET_OS=macos
     - QT_VERSION=5.7.1
     - QT_DIR=qt@5.7
-services: docker
 cache:
   directories:
   - "$HOME/gcc-arm-none-eabi-5_2-2015q4"
