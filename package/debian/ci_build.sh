@@ -26,5 +26,5 @@ if [ $# -gt 2 ]; then
 fi
 
 echo "Build framework..."
-bash build_frm.sh $OUTPATH && \
+bash build_frm.sh $OUTPATH $FRM_BRANCH && \
 bash docker_run.sh $OUTPATH $BRANCH $FRM_BRANCH
