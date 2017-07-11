@@ -16,6 +16,8 @@ fi
 DIST_DEST_DIR="$DISTDIR/usr/local/openmono"
 
 echo "Destination is: $DISTDIR"
+echo "Framework branch: $FRM_BRANCH"
+echo "Package branch: $BRANCH (Travis: $TRAVIS_BRANCH)"
 printf "NodeJs "
 node -v
 printf "npm v"
