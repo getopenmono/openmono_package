@@ -7,7 +7,7 @@ image: Visual Studio 2013
 platform: x86
 environment:
     my_secret:
-        secure: 7PWu3rVNWM36yW8OiIC50A==
+        secure: Qvyeh+GUyX4YnohD43RSOw==
 install:
     - nuget install secure-file -ExcludeVersion
     - secure-file\tools\secure-file -decrypt package\win\monolit-cert.p12.enc -secret %my_secret% -out package\win\monolit-cert.p12
