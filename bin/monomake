@@ -62,7 +62,7 @@ function writeMakefile {
     echo "# Makefile created by $APPNAME, $DATE" > $2
     echo "# Project: $1" >> $2
     echo "" >> $2
-    echo "MONO_PATH=\$(shell monomake path --bare)" >> $2
+    echo "MONO_PATH=\$(subst \\,/,\$(shell monomake path --bare))" >> $2
     echo "include \$(MONO_PATH)/predefines.mk" >> $2
     echo "" >> $2
     echo "TARGET=$1" >> $2
