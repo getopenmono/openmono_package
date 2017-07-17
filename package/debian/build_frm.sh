@@ -6,7 +6,7 @@
 source ../configuration.sh
 
 if [ ! $FRM_BRANCH ]; then FRM_BRANCH="master"; fi
-if [ ! $FRM_DOCKER_IMAGE ]; then FRM_DOCKER_IMAGE="monolit/monofrm"; fi
+if [ ! $FRM_DOCKER_IMAGE ]; then FRM_DOCKER_IMAGE="monolit/framework"; fi
 
 if [ $# -lt 1 ]; then
 	echo "ERROR: missing input params!"
