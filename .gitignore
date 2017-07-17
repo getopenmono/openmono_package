@@ -22,3 +22,4 @@ mono_psoc5_library
 ._*
 debpackage
 little-helper
+tests/testApps

@@ -8,7 +8,7 @@
 if [ $# -lt 1 ]; then
 	echo "Not enough arguments!"
 	echo "Usage:"
-	echo "$0 OUTPUT_PATH [PACKAGE_BRANCH]"
+	echo "$0 OUTPUT_PATH [PACKAGE_BRANCH] [FRM_BRANCH]"
 	exit 1
 fi
 
